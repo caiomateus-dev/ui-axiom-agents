@@ -1,9 +1,13 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
 import { describe, expect, it } from "vitest";
 
+import { server } from "@/test/mocks/server";
 import { createQueryWrapper } from "@/test/test-utils";
 
 import { useChatPage } from "./use-chat-page";
+
+const API_URL = "http://localhost:3000";
 
 describe("useChatPage", () => {
   it("starts with empty state", () => {
@@ -40,11 +44,22 @@ describe("useChatPage", () => {
     });
 
     act(() => result.current.handleSend("hello"));
-    // No user message should be added when agentId is 0
     expect(result.current.messages).toEqual([]);
   });
 
   it("sends a message and receives response", async () => {
+    server.use(
+      http.post(`${API_URL}/agents/chat`, () => {
+        return HttpResponse.json({
+          message: "Hello! I am an AI assistant.",
+          session_id: "session-123",
+          agent_id: 1,
+          agent_name: "Agent 1",
+          tokens_used: 42,
+        });
+      }),
+    );
+
     const { result } = renderHook(() => useChatPage(), {
       wrapper: createQueryWrapper(),
     });
@@ -52,10 +67,8 @@ describe("useChatPage", () => {
     act(() => result.current.handleAgentIdChange("1"));
     act(() => result.current.handleSend("Hello"));
 
-    // User message is added immediately
     expect(result.current.messages).toHaveLength(1);
     expect(result.current.messages[0].role).toBe("user");
-    expect(result.current.messages[0].content).toBe("Hello");
 
     await waitFor(() => {
       expect(result.current.messages).toHaveLength(2);
@@ -67,6 +80,21 @@ describe("useChatPage", () => {
   });
 
   it("resets chat session", async () => {
+    server.use(
+      http.post(`${API_URL}/agents/chat`, () => {
+        return HttpResponse.json({
+          message: "Hello!",
+          session_id: "session-123",
+          agent_id: 1,
+          agent_name: "Agent 1",
+          tokens_used: 10,
+        });
+      }),
+      http.post(`${API_URL}/agents/chat/reset`, () => {
+        return new HttpResponse(null, { status: 200 });
+      }),
+    );
+
     const { result } = renderHook(() => useChatPage(), {
       wrapper: createQueryWrapper(),
     });

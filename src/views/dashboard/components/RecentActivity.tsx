@@ -1,6 +1,7 @@
 import { Bot, MessageCircle, Wrench } from "lucide-react";
 
 import { Badge } from "@/components";
+
 import type { AuditResponse } from "@/views/audit-logs/dtos/response/audit.response";
 
 interface RecentActivityProps {
@@ -91,7 +92,9 @@ export function RecentActivity({ data, isLoading }: RecentActivityProps) {
               <div className="text-right shrink-0">
                 <span className="text-xs text-text-muted">{timeAgo(audit.created_at)}</span>
                 {audit.tokens_used > 0 && (
-                  <p className="text-xs text-text-muted">{formatTokens(audit.tokens_used)} tokens</p>
+                  <p className="text-xs text-text-muted">
+                    {formatTokens(audit.tokens_used)} tokens
+                  </p>
                 )}
               </div>
             </div>

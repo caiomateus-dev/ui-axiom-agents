@@ -1,8 +1,8 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
-import { DataTable } from "@/components/ui/DataTable";
+import { Badge, Button, Input, Modal, DataTable } from "@/components";
 import type { ColumnDef } from "@/components/ui/DataTable";
+
 import { formatDate, maskKey } from "@/utils";
 
 import type { ApiKeyResponse } from "./dtos/response/api-key.response";
@@ -177,11 +177,7 @@ export function ApiKeys() {
       </Modal>
 
       {/* Delete Confirmation Modal */}
-      <Modal
-        open={!!deletingKey}
-        onClose={() => setDeletingKey(null)}
-        title="Confirmar Exclusão"
-      >
+      <Modal open={!!deletingKey} onClose={() => setDeletingKey(null)} title="Confirmar Exclusão">
         <div className="flex flex-col gap-4">
           <p className="text-sm text-text-muted">
             Tem certeza que deseja excluir a API Key{" "}

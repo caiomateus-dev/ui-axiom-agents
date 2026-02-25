@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 import {
   AppWindow,
   Bot,
@@ -17,10 +19,10 @@ import {
   Wrench,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { NavLink } from "react-router";
+
+import { useAuth, useSidebar, useTheme } from "@/contexts";
 
 import { ThemeToggle } from "@/components";
-import { useAuth, useSidebar, useTheme } from "@/contexts";
 
 interface NavItem {
   to: string;
@@ -60,7 +62,11 @@ export function Sidebar() {
         title={collapsed ? "Expandir" : "Recolher"}
         className="absolute -right-3 top-7 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-border-subtle bg-bg-card text-text-muted hover:text-text-main hover:bg-brand-50 transition-colors cursor-pointer shadow-sm"
       >
-        {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+        {collapsed ? (
+          <ChevronRight className="w-3.5 h-3.5" />
+        ) : (
+          <ChevronLeft className="w-3.5 h-3.5" />
+        )}
       </button>
 
       {/* Logo */}

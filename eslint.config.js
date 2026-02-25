@@ -7,7 +7,7 @@ import importHelpers from "eslint-plugin-import-helpers";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores(["dist"]),
+  globalIgnores(["dist", "e2e"]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
@@ -26,16 +26,35 @@ export default defineConfig([
     rules: {
       "react-refresh/only-export-components": [
         "warn",
-        { allowConstantExport: true },
+        { allowConstantExport: true, allowExportNames: ["use*", "*Provider"] },
       ],
       "import-helpers/order-imports": [
         "warn",
         {
           newlinesBetween: "always",
-          groups: ["module", "/^@\\//", ["parent", "sibling", "index"]],
+          groups: [
+            ["/^react/"],
+            "module",
+            "/^@/core/",
+            "/^@/types/",
+            "/^@/contexts/",
+            "/^@/hooks/",
+            "/^@/components/",
+            "/^@/views/",
+            "/^@/utils/",
+            "/^@/constants/",
+            "/^@/test/",
+            ["parent", "sibling", "index"],
+          ],
           alphabetize: { order: "asc", ignoreCase: true },
         },
       ],
+    },
+  },
+  {
+    files: ["**/*.test.{ts,tsx}", "src/test/**", "src/contexts/**"],
+    rules: {
+      "react-refresh/only-export-components": "off",
     },
   },
 ]);

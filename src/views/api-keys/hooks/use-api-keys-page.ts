@@ -1,8 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useToast } from "@/contexts/ToastContext";
+
 import { useApplications } from "@/views/applications/hooks/use-applications";
 
 import type { ApiKeyFormData } from "../dtos/request/api-key.schema";

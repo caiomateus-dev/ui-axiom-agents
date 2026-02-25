@@ -1,10 +1,10 @@
-import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 import { Badge, Spinner } from "@/components";
 
 import type { AuditResponse } from "../dtos/response/audit.response";
-
 
 interface AuditTableProps {
   audits: AuditResponse[];

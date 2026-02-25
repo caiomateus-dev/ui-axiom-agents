@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
 import { AuthLayout } from "@/components";
+
 import { AgentDetail, Agents } from "@/views/agents";
 import { ApiKeys } from "@/views/api-keys";
 import { Applications } from "@/views/applications";

@@ -33,7 +33,7 @@ describe("useCreateApplication", () => {
     });
 
     await result.current.mutateAsync({ name: "New App", description: "Test" });
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });
 
@@ -48,7 +48,7 @@ describe("useUpdateApplication", () => {
       data: { name: "Updated App" },
     });
 
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });
 
@@ -59,7 +59,7 @@ describe("useDeleteApplication", () => {
     });
 
     await result.current.mutateAsync(1);
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 
   it("handles deletion error", async () => {

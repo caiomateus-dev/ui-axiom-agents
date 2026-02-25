@@ -1,7 +1,8 @@
 import { Navigate } from "react-router";
 
-import { Button, Input } from "@/components";
 import { useTheme } from "@/contexts";
+
+import { Button, Input } from "@/components";
 
 import { useLoginPage } from "./hooks";
 

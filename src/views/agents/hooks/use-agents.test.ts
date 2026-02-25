@@ -52,7 +52,7 @@ describe("useCreateAgent", () => {
       description: "Test",
     });
 
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 
   it("handles creation error", async () => {
@@ -66,8 +66,6 @@ describe("useCreateAgent", () => {
       wrapper: createQueryWrapper(),
     });
 
-    await expect(
-      result.current.mutateAsync({ name: "Fail", model: "gpt-4" }),
-    ).rejects.toThrow();
+    await expect(result.current.mutateAsync({ name: "Fail", model: "gpt-4" })).rejects.toThrow();
   });
 });

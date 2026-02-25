@@ -3,6 +3,7 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { Badge, Button, Input, Modal } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
+
 import { formatDate, truncate } from "@/utils";
 
 import type { PromptResponse } from "./dtos/response/prompt.response";

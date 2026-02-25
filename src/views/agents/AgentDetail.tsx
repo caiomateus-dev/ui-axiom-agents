@@ -1,7 +1,9 @@
-import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 
+import { ArrowLeft } from "lucide-react";
+
 import { Badge, Button, Spinner } from "@/components";
+
 import { formatDateTime } from "@/utils";
 
 import { useAgent } from "./hooks/use-agents";
@@ -51,9 +53,7 @@ export function AgentDetail() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 className="text-sm font-medium text-text-muted mb-1">Descrição</h3>
-            <p className="text-sm text-text-main">
-              {agent.description || "Sem descrição"}
-            </p>
+            <p className="text-sm text-text-main">{agent.description || "Sem descrição"}</p>
           </div>
 
           <div>

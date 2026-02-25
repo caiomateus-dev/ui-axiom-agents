@@ -3,6 +3,7 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { Badge, Button, Input, Modal } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
+
 import { formatDate } from "@/utils";
 
 import type { WebhookResponse } from "./dtos/response/webhook.response";
@@ -45,9 +46,7 @@ export function Webhooks() {
     {
       id: "url",
       header: "URL",
-      accessor: (row) => (
-        <span className="text-text-muted max-w-xs truncate block">{row.url}</span>
-      ),
+      accessor: (row) => <span className="text-text-muted max-w-xs truncate block">{row.url}</span>,
     },
     {
       id: "auth_type",

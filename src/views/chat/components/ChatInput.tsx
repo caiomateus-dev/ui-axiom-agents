@@ -1,6 +1,7 @@
-import { Send } from "lucide-react";
 import { useState } from "react";
 import type { KeyboardEvent } from "react";
+
+import { Send } from "lucide-react";
 
 interface ChatInputProps {
   onSend: (text: string) => void;

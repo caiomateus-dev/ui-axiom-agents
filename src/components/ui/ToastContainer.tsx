@@ -1,5 +1,6 @@
-import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from "lucide-react";
 import { createPortal } from "react-dom";
+
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from "lucide-react";
 
 import type { ToastType } from "@/contexts/ToastContext";
 import { useToastState } from "@/contexts/ToastContext";
@@ -24,7 +25,7 @@ export function ToastContainer() {
   if (toasts.length === 0) return null;
 
   return createPortal(
-    <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2">
+    <div className="fixed bottom-4 right-4 z-100 flex flex-col gap-2">
       {toasts.map((toast) => {
         const Icon = icons[toast.type];
         return (

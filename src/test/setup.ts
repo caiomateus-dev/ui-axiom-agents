@@ -10,6 +10,7 @@ afterEach(() => {
   server.resetHandlers();
   cleanup();
   localStorage.clear();
+  window.location.href = "http://localhost:3000";
 });
 afterAll(() => server.close());
 
@@ -59,5 +60,5 @@ Object.defineProperty(crypto, "randomUUID", {
 // Mock window.location
 Object.defineProperty(window, "location", {
   writable: true,
-  value: { ...window.location, href: "" },
+  value: { ...window.location, href: "http://localhost:3000" },
 });

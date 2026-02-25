@@ -33,7 +33,7 @@ describe("useCreateApiKey", () => {
       is_active: true,
     });
 
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });
 
@@ -48,7 +48,7 @@ describe("useUpdateApiKey", () => {
       data: { name: "Updated Key" },
     });
 
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });
 
@@ -59,7 +59,7 @@ describe("useDeleteApiKey", () => {
     });
 
     await result.current.mutateAsync(1);
-    expect(result.current.isSuccess).toBe(true);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 
   it("handles deletion error", async () => {

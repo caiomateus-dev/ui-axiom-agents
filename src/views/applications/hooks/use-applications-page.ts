@@ -1,6 +1,7 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@/contexts/ToastContext";
 
@@ -67,9 +68,7 @@ export function useApplicationsPage() {
   });
 
   async function handleDelete(app: ApplicationResponse) {
-    const confirmed = window.confirm(
-      `Tem certeza que deseja excluir a application "${app.name}"?`,
-    );
+    const confirmed = window.confirm(`Tem certeza que deseja excluir a application "${app.name}"?`);
     if (confirmed) {
       try {
         await deleteApplication.mutateAsync(app.id);

@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router";
 
-import { Spinner } from "@/components";
 import { useAuth, useSidebar } from "@/contexts";
+
+import { Spinner } from "@/components";
 
 import { Sidebar } from "./Sidebar";
 

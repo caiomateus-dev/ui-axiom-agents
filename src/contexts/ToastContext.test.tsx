@@ -1,5 +1,6 @@
-import { act, renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
+
+import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ToastProvider, useToast, useToastState } from "./ToastContext";
@@ -56,37 +57,33 @@ describe("ToastContext", () => {
 
   describe("useToast convenience methods", () => {
     it("success() adds success toast", () => {
-      const { result } = renderHook(
-        () => ({ toast: useToast(), state: useToastState() }),
-        { wrapper },
-      );
+      const { result } = renderHook(() => ({ toast: useToast(), state: useToastState() }), {
+        wrapper,
+      });
       act(() => result.current.toast.success("OK"));
       expect(result.current.state.toasts[0].type).toBe("success");
     });
 
     it("error() adds error toast", () => {
-      const { result } = renderHook(
-        () => ({ toast: useToast(), state: useToastState() }),
-        { wrapper },
-      );
+      const { result } = renderHook(() => ({ toast: useToast(), state: useToastState() }), {
+        wrapper,
+      });
       act(() => result.current.toast.error("Fail"));
       expect(result.current.state.toasts[0].type).toBe("error");
     });
 
     it("info() adds info toast", () => {
-      const { result } = renderHook(
-        () => ({ toast: useToast(), state: useToastState() }),
-        { wrapper },
-      );
+      const { result } = renderHook(() => ({ toast: useToast(), state: useToastState() }), {
+        wrapper,
+      });
       act(() => result.current.toast.info("Note"));
       expect(result.current.state.toasts[0].type).toBe("info");
     });
 
     it("warning() adds warning toast", () => {
-      const { result } = renderHook(
-        () => ({ toast: useToast(), state: useToastState() }),
-        { wrapper },
-      );
+      const { result } = renderHook(() => ({ toast: useToast(), state: useToastState() }), {
+        wrapper,
+      });
       act(() => result.current.toast.warning("Watch out"));
       expect(result.current.state.toasts[0].type).toBe("warning");
     });

@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 
 import { server } from "@/test/mocks/server";
 
@@ -10,7 +10,6 @@ const API_URL = "http://localhost:3000";
 describe("api", () => {
   afterEach(() => {
     localStorage.clear();
-    window.location.href = "";
   });
 
   it("attaches Bearer token from localStorage", async () => {
@@ -62,7 +61,7 @@ describe("api", () => {
     expect(callCount).toBe(2);
   });
 
-  it("redirects to /login when refresh fails", async () => {
+  it("clears tokens on 401 when refresh fails", async () => {
     localStorage.setItem("access_token", "expired-token");
     localStorage.setItem("refresh_token", "invalid-refresh");
 
@@ -76,10 +75,11 @@ describe("api", () => {
     );
 
     await expect(api.get("/test")).rejects.toThrow();
-    expect(window.location.href).toBe("/login");
+    expect(localStorage.getItem("access_token")).toBeNull();
+    expect(localStorage.getItem("refresh_token")).toBeNull();
   });
 
-  it("redirects to /login on 401 when no refresh token", async () => {
+  it("clears tokens on 401 when no refresh token exists", async () => {
     localStorage.setItem("access_token", "expired-token");
 
     server.use(
@@ -89,6 +89,6 @@ describe("api", () => {
     );
 
     await expect(api.get("/test")).rejects.toThrow();
-    expect(window.location.href).toBe("/login");
+    expect(localStorage.getItem("access_token")).toBeNull();
   });
 });

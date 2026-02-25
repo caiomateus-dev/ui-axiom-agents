@@ -1,6 +1,7 @@
-import { ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
+
+import { ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "./Button";
 
@@ -134,11 +135,7 @@ export function DataTable<T>({
             <tr>
               {columns.map((col) => {
                 const SortIcon =
-                  sortCol === col.id
-                    ? sortDir === "asc"
-                      ? ArrowUp
-                      : ArrowDown
-                    : ArrowUpDown;
+                  sortCol === col.id ? (sortDir === "asc" ? ArrowUp : ArrowDown) : ArrowUpDown;
 
                 return (
                   <th
