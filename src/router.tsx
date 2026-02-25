@@ -1,0 +1,42 @@
+import { createBrowserRouter } from "react-router";
+
+import { AuthLayout } from "@/components";
+import { AgentDetail, Agents } from "@/views/agents";
+import { ApiKeys } from "@/views/api-keys";
+import { Applications } from "@/views/applications";
+import { AuditLogs } from "@/views/audit-logs";
+import { Chat } from "@/views/chat";
+import { Dashboard } from "@/views/dashboard";
+import { Login } from "@/views/login";
+import { McpServers } from "@/views/mcp-servers";
+import { Prompts } from "@/views/prompts";
+import { Tools } from "@/views/tools";
+import { Users } from "@/views/users";
+import { VectorStores } from "@/views/vector-stores";
+import { Webhooks } from "@/views/webhooks";
+
+export const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/",
+    element: <AuthLayout />,
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: "agents", element: <Agents /> },
+      { path: "agents/:id", element: <AgentDetail /> },
+      { path: "applications", element: <Applications /> },
+      { path: "api-keys", element: <ApiKeys /> },
+      { path: "tools", element: <Tools /> },
+      { path: "prompts", element: <Prompts /> },
+      { path: "vector-stores", element: <VectorStores /> },
+      { path: "webhooks", element: <Webhooks /> },
+      { path: "mcp-servers", element: <McpServers /> },
+      { path: "chat", element: <Chat /> },
+      { path: "audit-logs", element: <AuditLogs /> },
+      { path: "users", element: <Users /> },
+    ],
+  },
+]);

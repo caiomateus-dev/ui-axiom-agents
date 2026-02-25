@@ -1,0 +1,12 @@
+export interface PromptResponse {
+  id: number;
+  agent_id: number;
+  agent_name: string;
+  version: number;
+  is_active: boolean;
+  prompt: string;
+  description: string;
+  created_by: number | null;
+  created_at: string;
+  updated_at: string;
+}
