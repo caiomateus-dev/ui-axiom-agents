@@ -47,23 +47,23 @@ export function Sidebar() {
 
   const sections: NavSection[] = [
     {
-      items: [{ to: "/", icon: LayoutDashboard, label: "Dashboard" }],
+      items: [{ to: "/", icon: LayoutDashboard, label: "Painel" }],
     },
     {
       label: "Organização",
       items: [
-        { to: "/agents", icon: Bot, label: "Agents" },
-        { to: "/applications", icon: AppWindow, label: "Applications" },
-        { to: "/mcp-servers", icon: Server, label: "MCP Servers" },
+        { to: "/agents", icon: Bot, label: "Agentes" },
+        { to: "/applications", icon: AppWindow, label: "Aplicações" },
+        { to: "/mcp-servers", icon: Server, label: "Servidores MCP" },
       ],
     },
     {
       label: "Configuração",
       items: [
         { to: "/prompts", icon: MessageSquare, label: "Prompts" },
-        { to: "/vector-stores", icon: Database, label: "Vector Stores" },
+        { to: "/vector-stores", icon: Database, label: "Base de Conhecimento" },
         { to: "/webhooks", icon: Webhook, label: "Webhooks" },
-        { to: "/tools", icon: Wrench, label: "Tools" },
+        { to: "/tools", icon: Wrench, label: "Ferramentas" },
       ],
     },
     {
@@ -83,9 +83,9 @@ export function Sidebar() {
           {
             label: "Admin",
             items: [
-              { to: "/audit-logs", icon: ScrollText, label: "Audit Logs" },
+              { to: "/audit-logs", icon: ScrollText, label: "Auditoria" },
               { to: "/users", icon: Users, label: "Usuários" },
-              { to: "/organizations", icon: Building2, label: "Organizations" },
+              { to: "/organizations", icon: Building2, label: "Organizações" },
             ],
           },
         ]
@@ -175,13 +175,13 @@ export function Sidebar() {
         <ThemeToggle collapsed={collapsed} />
         <button
           onClick={logout}
-          title={collapsed ? "Logout" : undefined}
+          title={collapsed ? "Sair" : undefined}
           className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors text-text-muted hover:text-text-main hover:bg-brand-50 w-full cursor-pointer ${
             collapsed ? "justify-center" : ""
           }`}
         >
           <LogOut className="w-5 h-5 shrink-0" />
-          {!collapsed && <span>Logout</span>}
+          {!collapsed && <span>Sair</span>}
         </button>
       </div>
     </aside>

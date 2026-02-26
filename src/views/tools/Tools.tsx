@@ -71,7 +71,7 @@ export function Tools() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-text-main">Tools</h1>
+        <h1 className="text-2xl font-bold text-text-main">Ferramentas</h1>
         <Button variant="secondary" onClick={handleSync} loading={isSyncing}>
           <RefreshCw className="w-4 h-4" />
           Sincronizar
@@ -84,18 +84,18 @@ export function Tools() {
         rowKey={(row) => row.id}
         isLoading={isLoading}
         isError={isError}
-        errorMessage="Erro ao carregar tools. Tente novamente mais tarde."
-        emptyMessage='Nenhuma tool encontrada. Clique em "Sincronizar" para importar do registro.'
+        errorMessage="Erro ao carregar ferramentas. Tente novamente mais tarde."
+        emptyMessage='Nenhuma ferramenta encontrada. Clique em "Sincronizar" para importar do registro.'
       />
 
       {/* Edit Panel */}
-      <SlidePanel open={!!editingTool} onClose={handleCloseEdit} title="Editar Tool">
+      <SlidePanel open={!!editingTool} onClose={handleCloseEdit} title="Editar Ferramenta">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...registerEdit("name")}
             id="edit-name"
             label="Nome"
-            placeholder="Nome da tool"
+            placeholder="Nome da ferramenta"
             error={editErrors.name?.message}
           />
           <div className="w-full">
@@ -109,7 +109,7 @@ export function Tools() {
               {...registerEdit("description")}
               id="edit-description"
               rows={4}
-              placeholder="Descrição da tool"
+              placeholder="Descrição da ferramenta"
               className="w-full rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors resize-vertical"
             />
             {editErrors.description && (

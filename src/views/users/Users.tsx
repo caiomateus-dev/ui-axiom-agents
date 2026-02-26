@@ -63,7 +63,7 @@ export function Users() {
         <div className="flex items-center gap-1">
           {row.is_superuser && <Badge variant="warning">Superuser</Badge>}
           {row.is_staff && !row.is_superuser && <Badge variant="info">Staff</Badge>}
-          {!row.is_staff && !row.is_superuser && <Badge variant="info">Usuario</Badge>}
+          {!row.is_staff && !row.is_superuser && <Badge variant="info">Usuário</Badge>}
         </div>
       ),
     },
@@ -78,7 +78,7 @@ export function Users() {
     },
     {
       id: "last_login",
-      header: "Ultimo Login",
+      header: "Último Login",
       accessor: (row) => <span className="text-text-muted">{formatDate(row.last_login)}</span>,
     },
     {
@@ -88,7 +88,7 @@ export function Users() {
     },
     {
       id: "actions",
-      header: "Acoes",
+      header: "Ações",
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
@@ -138,10 +138,10 @@ export function Users() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-text-main">Usuarios</h1>
+        <h1 className="text-2xl font-bold text-text-main">Usuários</h1>
         <Button onClick={handleOpenCreate}>
           <Plus className="w-4 h-4" />
-          Novo Usuario
+          Novo Usuário
         </Button>
       </div>
 
@@ -164,21 +164,21 @@ export function Users() {
         rowKey={(row) => row.id}
         isLoading={isLoading}
         isError={isError}
-        errorMessage="Erro ao carregar usuarios. Tente novamente mais tarde."
-        emptyMessage="Nenhum usuario encontrado."
+        errorMessage="Erro ao carregar usuários. Tente novamente mais tarde."
+        emptyMessage="Nenhum usuário encontrado."
         page={page}
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
 
       {/* Create Panel */}
-      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo Usuario">
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo Usuário">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             {...createRegister("name")}
             id="create-name"
             label="Nome"
-            placeholder="Nome do usuario"
+            placeholder="Nome do usuário"
             error={createErrors.name?.message}
           />
           <Input
@@ -193,7 +193,7 @@ export function Users() {
             id="create-password"
             label="Senha"
             type="password"
-            placeholder="Minimo 6 caracteres"
+            placeholder="Mínimo 6 caracteres"
             error={createErrors.password?.message}
           />
           <div className="flex flex-col gap-3">
@@ -226,13 +226,13 @@ export function Users() {
       </SlidePanel>
 
       {/* Edit Panel */}
-      <SlidePanel open={!!editingUser} onClose={handleCloseEdit} title="Editar Usuario">
+      <SlidePanel open={!!editingUser} onClose={handleCloseEdit} title="Editar Usuário">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...editRegister("name")}
             id="edit-name"
             label="Nome"
-            placeholder="Nome do usuario"
+            placeholder="Nome do usuário"
             error={editErrors.name?.message}
           />
           <Input
@@ -272,11 +272,11 @@ export function Users() {
       </SlidePanel>
 
       {/* Delete Confirmation Modal */}
-      <Modal open={!!deletingUser} onClose={handleCloseDelete} title="Excluir Usuario">
+      <Modal open={!!deletingUser} onClose={handleCloseDelete} title="Excluir Usuário">
         <div className="flex flex-col gap-4">
           <p className="text-sm text-text-muted">
-            Tem certeza que deseja excluir o usuario{" "}
-            <strong className="text-text-main">{deletingUser?.name}</strong>? Esta acao nao pode ser
+            Tem certeza que deseja excluir o usuário{" "}
+            <strong className="text-text-main">{deletingUser?.name}</strong>? Esta ação não pode ser
             desfeita.
           </p>
           <div className="flex justify-end gap-2 pt-2">

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createAgent } from "../api/create-agent";
 import { getAgent } from "../api/get-agent";
 import { listAgents } from "../api/list-agents";
+import type { AgentFormData } from "../dtos/request/agent.schema";
 
 export function useAgents() {
   return useQuery({
@@ -22,7 +23,8 @@ export function useAgent(id: number) {
 export function useCreateAgent() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createAgent,
+    mutationFn: ({ data, organizationId }: { data: AgentFormData; organizationId?: number }) =>
+      createAgent(data, organizationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["agents"] });
     },

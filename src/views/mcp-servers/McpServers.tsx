@@ -96,10 +96,10 @@ export function McpServers() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-text-main">MCP Servers</h1>
+        <h1 className="text-2xl font-bold text-text-main">Servidores MCP</h1>
         <Button onClick={handleOpenCreate}>
           <Plus className="w-4 h-4" />
-          Novo Server
+          Novo Servidor
         </Button>
       </div>
 
@@ -109,17 +109,17 @@ export function McpServers() {
         rowKey={(row) => row.id}
         isLoading={isLoading}
         isError={isError}
-        errorMessage="Erro ao carregar MCP servers. Tente novamente mais tarde."
-        emptyMessage='Nenhum MCP server encontrado. Crie o primeiro clicando em "Novo Server".'
+        errorMessage="Erro ao carregar servidores MCP. Tente novamente mais tarde."
+        emptyMessage='Nenhum servidor MCP encontrado. Crie o primeiro clicando em "Novo Servidor".'
       />
 
       {/* Create Panel */}
-      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo MCP Server">
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo Servidor MCP">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             id="name"
             label="Nome"
-            placeholder="Nome do server"
+            placeholder="Nome do servidor"
             value={formName}
             onChange={(e) => setFormName(e.target.value)}
           />
@@ -146,7 +146,7 @@ export function McpServers() {
           </div>
           <div className="w-full">
             <label htmlFor="config" className="block text-sm font-medium text-text-main mb-1">
-              Config (JSON)
+              Configuração (JSON)
             </label>
             <textarea
               id="config"
@@ -170,12 +170,12 @@ export function McpServers() {
       </SlidePanel>
 
       {/* Edit Panel */}
-      <SlidePanel open={!!editingServer} onClose={handleCloseEdit} title="Editar MCP Server">
+      <SlidePanel open={!!editingServer} onClose={handleCloseEdit} title="Editar Servidor MCP">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             id="edit-name"
             label="Nome"
-            placeholder="Nome do server"
+            placeholder="Nome do servidor"
             value={editName}
             onChange={(e) => setEditName(e.target.value)}
           />
@@ -202,7 +202,7 @@ export function McpServers() {
           </div>
           <div className="w-full">
             <label htmlFor="edit-config" className="block text-sm font-medium text-text-main mb-1">
-              Config (JSON)
+              Configuração (JSON)
             </label>
             <textarea
               id="edit-config"
@@ -233,7 +233,7 @@ export function McpServers() {
       >
         <div className="flex flex-col gap-4">
           <p className="text-sm text-text-muted">
-            Tem certeza que deseja excluir o server{" "}
+            Tem certeza que deseja excluir o servidor{" "}
             <span className="font-medium text-text-main">{deletingServer?.name}</span>? Essa ação
             não pode ser desfeita.
           </p>

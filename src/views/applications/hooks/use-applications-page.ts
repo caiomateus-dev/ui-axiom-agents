@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useOrganization } from "@/contexts";
 import { useToast } from "@/contexts/ToastContext";
 
 import type { ApplicationFormData } from "../dtos/request/application.schema";
@@ -17,8 +18,10 @@ import {
 
 export function useApplicationsPage() {
   const toast = useToast();
+  const { isAllOrgs, organizations } = useOrganization();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ApplicationResponse | null>(null);
+  const [selectedOrgId, setSelectedOrgId] = useState<number | null>(null);
 
   const { data: applications, isLoading, isError } = useApplications();
   const createApplication = useCreateApplication();
@@ -36,6 +39,7 @@ export function useApplicationsPage() {
 
   function handleOpenCreate() {
     setEditingItem(null);
+    setSelectedOrgId(null);
     reset({ name: "", description: "" });
     setIsModalOpen(true);
   }
@@ -49,6 +53,7 @@ export function useApplicationsPage() {
   function handleCloseModal() {
     setIsModalOpen(false);
     setEditingItem(null);
+    setSelectedOrgId(null);
     reset();
   }
 
@@ -56,25 +61,28 @@ export function useApplicationsPage() {
     try {
       if (editingItem) {
         await updateApplication.mutateAsync({ id: editingItem.id, data });
-        toast.success("Application atualizada com sucesso");
+        toast.success("Aplicação atualizada com sucesso");
       } else {
-        await createApplication.mutateAsync(data);
-        toast.success("Application criada com sucesso");
+        await createApplication.mutateAsync({
+          data,
+          organizationId: isAllOrgs && selectedOrgId ? selectedOrgId : undefined,
+        });
+        toast.success("Aplicação criada com sucesso");
       }
       handleCloseModal();
     } catch {
-      toast.error(editingItem ? "Erro ao atualizar application" : "Erro ao criar application");
+      toast.error(editingItem ? "Erro ao atualizar aplicação" : "Erro ao criar aplicação");
     }
   });
 
   async function handleDelete(app: ApplicationResponse) {
-    const confirmed = window.confirm(`Tem certeza que deseja excluir a application "${app.name}"?`);
+    const confirmed = window.confirm(`Tem certeza que deseja excluir a aplicação "${app.name}"?`);
     if (confirmed) {
       try {
         await deleteApplication.mutateAsync(app.id);
-        toast.success("Application excluída com sucesso");
+        toast.success("Aplicação excluída com sucesso");
       } catch {
-        toast.error("Erro ao excluir application");
+        toast.error("Erro ao excluir aplicação");
       }
     }
   }
@@ -96,5 +104,9 @@ export function useApplicationsPage() {
     isSubmitting,
     handleDelete,
     isDeleting: deleteApplication.isPending,
+    isAllOrgs,
+    organizations,
+    selectedOrgId,
+    setSelectedOrgId,
   };
 }

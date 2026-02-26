@@ -42,12 +42,12 @@ export function ApiKeys() {
     },
     {
       id: "application",
-      header: "Application",
+      header: "Aplicação",
       accessor: (row) => <span className="text-text-muted">{row.application_name}</span>,
     },
     {
       id: "key",
-      header: "Key",
+      header: "Chave",
       accessor: (row) => (
         <span className="font-mono text-xs text-text-muted">{maskKey(row.key)}</span>
       ),
@@ -120,7 +120,7 @@ export function ApiKeys() {
               htmlFor="application_id"
               className="block text-sm font-medium text-text-main mb-1"
             >
-              Application
+              Aplicação
             </label>
             <select
               {...registerCreate("application_id", { valueAsNumber: true })}
@@ -129,7 +129,7 @@ export function ApiKeys() {
               defaultValue=""
             >
               <option value="" disabled>
-                Selecione uma application
+                Selecione uma aplicação
               </option>
               {applications?.map((app) => (
                 <option key={app.id} value={app.id}>
