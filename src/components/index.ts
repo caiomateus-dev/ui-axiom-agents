@@ -8,6 +8,7 @@ export {
   DataTable,
   Input,
   Modal,
+  SlidePanel,
   Spinner,
   ToastContainer,
   Tooltip,

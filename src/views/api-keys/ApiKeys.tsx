@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal, DataTable, Tooltip } from "@/components";
+import { Badge, Button, Input, Modal, SlidePanel, DataTable, Tooltip } from "@/components";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
 import { formatDate, maskKey } from "@/utils";
@@ -112,8 +112,8 @@ export function ApiKeys() {
         emptyMessage='Nenhuma API Key encontrada. Crie a primeira clicando em "Nova API Key".'
       />
 
-      {/* Create Modal */}
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Nova API Key">
+      {/* Create Panel */}
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Nova API Key">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <div className="w-full">
             <label
@@ -148,7 +148,7 @@ export function ApiKeys() {
             placeholder="Nome da API Key"
             error={createErrors.name?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>
               Cancelar
             </Button>
@@ -157,10 +157,10 @@ export function ApiKeys() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
-      {/* Edit Modal */}
-      <Modal open={!!editingKey} onClose={handleCloseEdit} title="Editar API Key">
+      {/* Edit Panel */}
+      <SlidePanel open={!!editingKey} onClose={handleCloseEdit} title="Editar API Key">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...registerEdit("name")}
@@ -169,7 +169,7 @@ export function ApiKeys() {
             placeholder="Nome da API Key"
             error={editErrors.name?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
@@ -178,7 +178,7 @@ export function ApiKeys() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
       {/* Delete Confirmation Modal */}
       <Modal open={!!deletingKey} onClose={() => setDeletingKey(null)} title="Confirmar Exclusão">

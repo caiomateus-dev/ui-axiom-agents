@@ -1,6 +1,6 @@
 import { Pencil, RefreshCw } from "lucide-react";
 
-import { Badge, Button, Input, Modal, Tooltip } from "@/components";
+import { Badge, Button, Input, SlidePanel, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -88,8 +88,8 @@ export function Tools() {
         emptyMessage='Nenhuma tool encontrada. Clique em "Sincronizar" para importar do registro.'
       />
 
-      {/* Edit Modal */}
-      <Modal open={!!editingTool} onClose={handleCloseEdit} title="Editar Tool">
+      {/* Edit Panel */}
+      <SlidePanel open={!!editingTool} onClose={handleCloseEdit} title="Editar Tool">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...registerEdit("name")}
@@ -116,7 +116,7 @@ export function Tools() {
               <p className="text-xs text-error-text mt-1">{editErrors.description.message}</p>
             )}
           </div>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
@@ -125,7 +125,7 @@ export function Tools() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
     </div>
   );
 }
