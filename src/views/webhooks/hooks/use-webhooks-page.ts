@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@/contexts/ToastContext";
 
+import { useAgents } from "@/views/agents/hooks/use-agents";
 import { useApplications } from "@/views/applications/hooks/use-applications";
 
 import type { WebhookFormData } from "../dtos/request/webhook.schema";
@@ -19,6 +20,7 @@ export function useWebhooksPage() {
   const [editingWebhook, setEditingWebhook] = useState<WebhookResponse | null>(null);
   const [deletingWebhook, setDeletingWebhook] = useState<WebhookResponse | null>(null);
 
+  const { data: agents } = useAgents();
   const { data: applications } = useApplications();
   const { data: webhooks, isLoading, isError } = useWebhooks(applicationId);
   const createWebhook = useCreateWebhook();
@@ -107,6 +109,7 @@ export function useWebhooksPage() {
   return {
     applicationId,
     applications,
+    agents,
     handleApplicationChange,
     webhooks,
     isLoading,

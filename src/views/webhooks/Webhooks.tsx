@@ -13,6 +13,7 @@ export function Webhooks() {
   const {
     applicationId,
     applications,
+    agents,
     handleApplicationChange,
     webhooks,
     isLoading,
@@ -142,14 +143,29 @@ export function Webhooks() {
       {/* Create Panel */}
       <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo Webhook">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
-          <Input
-            {...registerCreate("agent_id", { valueAsNumber: true })}
-            id="agent_id"
-            label="Agente"
-            type="number"
-            placeholder="ID do agente"
-            error={createErrors.agent_id?.message}
-          />
+          <div className="w-full">
+            <label htmlFor="agent_id" className="block text-sm font-medium text-text-main mb-1">
+              Agente
+            </label>
+            <select
+              {...registerCreate("agent_id", { valueAsNumber: true })}
+              id="agent_id"
+              className="w-full rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selecione um agente
+              </option>
+              {agents?.map((agent) => (
+                <option key={agent.id} value={agent.id}>
+                  {agent.name}
+                </option>
+              ))}
+            </select>
+            {createErrors.agent_id && (
+              <p className="text-xs text-error-text mt-1">{createErrors.agent_id.message}</p>
+            )}
+          </div>
           <Input
             {...registerCreate("url")}
             id="url"
