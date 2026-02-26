@@ -24,4 +24,4 @@ jobs:
             cd /root/cmcodes-vault
             git checkout main
             git pull origin main
-            /bin/bash /root/cmcodes-vault/ui-axiom-agents/prod/deploy.sh
+            /bin/bash /root/projects/cmcodes-vault/ui-axiom-agents/prod/deploy.sh
