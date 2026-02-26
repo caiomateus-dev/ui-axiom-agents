@@ -21,7 +21,7 @@ jobs:
           script: |
             source ~/.nvm/nvm.sh
             nvm use 20.10.0
-            cd /root/cmcodes-vault
+            cd /root/projects/cmcodes-vault
             git checkout main
             git pull origin main
             /bin/bash /root/projects/cmcodes-vault/ui-axiom-agents/prod/deploy.sh
