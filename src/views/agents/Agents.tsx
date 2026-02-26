@@ -18,11 +18,6 @@ const columns: ColumnDef<AgentResponse>[] = [
     sortFn: (a, b) => a.name.localeCompare(b.name),
   },
   {
-    id: "model",
-    header: "Modelo",
-    accessor: (row) => <span className="text-text-muted">{row.model}</span>,
-  },
-  {
     id: "status",
     header: "Status",
     accessor: (row) => (
@@ -91,13 +86,6 @@ export function Agents() {
             label="Descrição"
             placeholder="Descrição do agent"
             error={errors.description?.message}
-          />
-          <Input
-            {...register("model")}
-            id="model"
-            label="Modelo"
-            placeholder="Ex: gpt-4o, claude-sonnet-4-20250514"
-            error={errors.model?.message}
           />
           <div className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>

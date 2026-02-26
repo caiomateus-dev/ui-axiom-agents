@@ -24,7 +24,17 @@ describe("AuthContext", () => {
     });
 
     expect(result.current.isAuthenticated).toBe(true);
-    expect(result.current.user).toEqual({ id: 1, email: "test@test.com", name: "Test User" });
+    expect(result.current.user).toEqual({
+      id: 1,
+      email: "test@test.com",
+      name: "Test User",
+      is_staff: false,
+      is_superuser: true,
+      organizations: [
+        { id: 1, name: "Default Org", slug: "default", role: "admin" },
+        { id: 2, name: "Second Org", slug: "second", role: "member" },
+      ],
+    });
     expect(localStorage.setItem).toHaveBeenCalledWith("access_token", "mock-access-token");
     expect(localStorage.setItem).toHaveBeenCalledWith("refresh_token", "mock-refresh-token");
   });

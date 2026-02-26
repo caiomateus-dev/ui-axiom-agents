@@ -57,11 +57,6 @@ export function AgentDetail() {
           </div>
 
           <div>
-            <h3 className="text-sm font-medium text-text-muted mb-1">Modelo</h3>
-            <p className="text-sm text-text-main">{agent.model}</p>
-          </div>
-
-          <div>
             <h3 className="text-sm font-medium text-text-muted mb-1">Criado em</h3>
             <p className="text-sm text-text-main">{formatDateTime(agent.created_at)}</p>
           </div>

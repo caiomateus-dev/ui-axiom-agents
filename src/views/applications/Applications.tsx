@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
+import { Badge, Button, Input, Modal, Tooltip } from "@/components";
 import type { ColumnDef } from "@/components/ui/DataTable";
 import { DataTable } from "@/components/ui/DataTable";
 
@@ -55,12 +55,21 @@ export function Applications() {
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
-          <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
-            <Pencil className="w-3.5 h-3.5" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => handleDelete(row)} disabled={isDeleting}>
-            <Trash2 className="w-3.5 h-3.5 text-error-text" />
-          </Button>
+          <Tooltip content="Editar">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
+              <Pencil className="w-3.5 h-3.5" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Excluir">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleDelete(row)}
+              disabled={isDeleting}
+            >
+              <Trash2 className="w-3.5 h-3.5 text-error-text" />
+            </Button>
+          </Tooltip>
         </div>
       ),
     },

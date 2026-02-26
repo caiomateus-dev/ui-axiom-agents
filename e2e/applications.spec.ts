@@ -12,17 +12,17 @@ test.describe("Applications", () => {
 
   test("opens create modal", async ({ authenticatedPage: page }) => {
     await page.goto("/applications");
-    await page.getByRole("button", { name: /criar|nova|new|add/i }).click();
-    await expect(page.locator('input[name="name"]')).toBeVisible();
+    await page.getByRole("button", { name: /nova application/i }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
   });
 
   test("creates a new application", async ({ authenticatedPage: page }) => {
     await page.goto("/applications");
-    await page.getByRole("button", { name: /criar|nova|new|add/i }).click();
+    await page.getByRole("button", { name: /nova application/i }).click();
 
     await page.locator('input[name="name"]').fill("New App");
-    await page.getByRole("button", { name: /criar|salvar|save|submit/i }).last().click();
+    await page.getByRole("dialog").getByRole("button", { name: /criar/i }).click();
 
-    await expect(page.getByText(/sucesso|success/i)).toBeVisible();
+    await expect(page.getByText(/sucesso/i)).toBeVisible();
   });
 });

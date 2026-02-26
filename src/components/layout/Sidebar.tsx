@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 import {
   AppWindow,
   Bot,
+  Building2,
   ChevronLeft,
   ChevronRight,
   Database,
@@ -20,9 +21,10 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import { useAuth, useSidebar, useTheme } from "@/contexts";
+import { useAuth, useOrganization, useSidebar, useTheme } from "@/contexts";
 
 import { ThemeToggle } from "@/components";
+import { OrgSwitcher } from "@/components/OrgSwitcher";
 
 interface NavItem {
   to: string;
@@ -47,8 +49,16 @@ const navItems: NavItem[] = [
 
 export function Sidebar() {
   const { collapsed, mobileOpen, toggleSidebar, openMobile, closeMobile } = useSidebar();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const { theme } = useTheme();
+  const { organizations } = useOrganization();
+
+  const isSuperuser = user?.is_superuser === true;
+
+  const allNavItems: NavItem[] = [
+    ...navItems,
+    ...(isSuperuser ? [{ to: "/organizations", icon: Building2, label: "Organizations" }] : []),
+  ];
 
   const sidebarContent = (
     <aside
@@ -82,9 +92,16 @@ export function Sidebar() {
         )}
       </div>
 
+      {/* Org Switcher */}
+      {organizations.length > 0 && (
+        <div className="px-2 pb-2">
+          <OrgSwitcher collapsed={collapsed} />
+        </div>
+      )}
+
       {/* Nav links */}
       <nav className="flex-1 overflow-y-auto px-2 space-y-1">
-        {navItems.map((item) => (
+        {allNavItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}

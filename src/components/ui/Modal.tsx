@@ -4,14 +4,22 @@ import { createPortal } from "react-dom";
 
 import { X } from "lucide-react";
 
+const sizeClasses = {
+  sm: "max-w-sm",
+  md: "max-w-lg",
+  lg: "max-w-2xl",
+  xl: "max-w-4xl",
+} as const;
+
 interface ModalProps {
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
+  size?: keyof typeof sizeClasses;
 }
 
-export function Modal({ open, onClose, title, children }: ModalProps) {
+export function Modal({ open, onClose, title, children, size = "md" }: ModalProps) {
   useEffect(() => {
     if (!open) return;
 
@@ -33,7 +41,10 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-bg-card rounded-xl shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        className={`bg-bg-card rounded-xl shadow-xl w-full ${sizeClasses[size]} mx-4 max-h-[90vh] overflow-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">

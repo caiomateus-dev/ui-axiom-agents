@@ -3,10 +3,20 @@ import type { ReactNode } from "react";
 
 import { api } from "@/core";
 
+export interface UserOrganization {
+  id: number;
+  name: string;
+  slug: string;
+  role: string;
+}
+
 interface User {
   id: number;
   email: string;
   name?: string;
+  is_staff?: boolean;
+  is_superuser?: boolean;
+  organizations: UserOrganization[];
 }
 
 interface AuthContextValue {
@@ -71,6 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(() => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("organization_id");
     setState({ user: null, token: null });
   }, []);
 

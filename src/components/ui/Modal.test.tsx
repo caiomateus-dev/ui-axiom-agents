@@ -71,6 +71,26 @@ describe("Modal", () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
+  it("uses default md size when no size prop is given", () => {
+    render(
+      <Modal open={true} onClose={vi.fn()} title="Test">
+        Content
+      </Modal>,
+    );
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.className).toContain("max-w-lg");
+  });
+
+  it("applies custom size class when size prop is given", () => {
+    render(
+      <Modal open={true} onClose={vi.fn()} title="Test" size="lg">
+        Content
+      </Modal>,
+    );
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.className).toContain("max-w-2xl");
+  });
+
   it("calls onClose when X button is clicked", async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();

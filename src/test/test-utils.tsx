@@ -6,7 +6,13 @@ import { render } from "@testing-library/react";
 import type { RenderOptions } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { AuthProvider, SidebarProvider, ThemeProvider, ToastProvider } from "@/contexts";
+import {
+  AuthProvider,
+  OrganizationProvider,
+  SidebarProvider,
+  ThemeProvider,
+  ToastProvider,
+} from "@/contexts";
 
 function createTestQueryClient() {
   return new QueryClient({
@@ -29,7 +35,9 @@ function AllProviders({ children }: WrapperProps) {
         <ToastProvider>
           <QueryClientProvider client={queryClient}>
             <AuthProvider>
-              <SidebarProvider>{children}</SidebarProvider>
+              <OrganizationProvider>
+                <SidebarProvider>{children}</SidebarProvider>
+              </OrganizationProvider>
             </AuthProvider>
           </QueryClientProvider>
         </ToastProvider>

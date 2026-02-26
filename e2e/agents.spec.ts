@@ -13,24 +13,23 @@ test.describe("Agents", () => {
 
   test("opens create agent modal", async ({ authenticatedPage: page }) => {
     await page.goto("/agents");
-    await page.getByRole("button", { name: /criar|novo|new|add/i }).click();
-    await expect(page.getByRole("dialog").or(page.locator("[class*='modal'], [class*='Modal']")).first()).toBeVisible();
+    await page.getByRole("button", { name: /novo agent/i }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
   });
 
   test("creates a new agent", async ({ authenticatedPage: page }) => {
     await page.goto("/agents");
-    await page.getByRole("button", { name: /criar|novo|new|add/i }).click();
+    await page.getByRole("button", { name: /novo agent/i }).click();
 
     await page.locator('input[name="name"]').fill("New Agent");
-    await page.locator('input[name="model"]').fill("gpt-4");
-    await page.getByRole("button", { name: /criar|salvar|save|submit/i }).last().click();
+    await page.getByRole("dialog").getByRole("button", { name: /criar/i }).click();
 
-    await expect(page.getByText(/sucesso|success/i)).toBeVisible();
+    await expect(page.getByText(/sucesso/i)).toBeVisible();
   });
 
   test("navigates to agent detail", async ({ authenticatedPage: page }) => {
     await page.goto("/agents");
-    await page.getByText("Agent GPT-4").click();
+    await page.locator("table tbody tr").first().click();
     await expect(page).toHaveURL(/agents\/1/);
   });
 });

@@ -6,6 +6,7 @@ export * from "./chat";
 export * from "./dashboard";
 export * from "./login";
 export * from "./mcp-servers";
+export * from "./organizations";
 export * from "./prompts";
 export * from "./tools";
 export * from "./users";

@@ -48,7 +48,6 @@ describe("useCreateAgent", () => {
 
     await result.current.mutateAsync({
       name: "New Agent",
-      model: "gpt-4",
       description: "Test",
     });
 
@@ -66,6 +65,6 @@ describe("useCreateAgent", () => {
       wrapper: createQueryWrapper(),
     });
 
-    await expect(result.current.mutateAsync({ name: "Fail", model: "gpt-4" })).rejects.toThrow();
+    await expect(result.current.mutateAsync({ name: "Fail" })).rejects.toThrow();
   });
 });

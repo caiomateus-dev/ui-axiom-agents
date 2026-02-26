@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
+import { Badge, Button, Input, Modal, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -72,12 +72,16 @@ export function Prompts() {
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
-          <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
-            <Pencil className="w-4 h-4" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeletingPrompt(row)}>
-            <Trash2 className="w-4 h-4 text-error-text" />
-          </Button>
+          <Tooltip content="Editar">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
+              <Pencil className="w-4 h-4" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Excluir">
+            <Button variant="ghost" size="sm" onClick={() => setDeletingPrompt(row)}>
+              <Trash2 className="w-4 h-4 text-error-text" />
+            </Button>
+          </Tooltip>
         </div>
       ),
     },
@@ -104,7 +108,7 @@ export function Prompts() {
       />
 
       {/* Create Modal */}
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Novo Prompt">
+      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Novo Prompt" size="lg">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             {...registerCreate("agent_id", { valueAsNumber: true })}
@@ -121,7 +125,7 @@ export function Prompts() {
             <textarea
               {...registerCreate("prompt")}
               id="prompt"
-              rows={6}
+              rows={12}
               placeholder="Conteúdo do prompt"
               className="w-full rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors resize-vertical"
             />
@@ -148,7 +152,7 @@ export function Prompts() {
       </Modal>
 
       {/* Edit Modal */}
-      <Modal open={!!editingPrompt} onClose={handleCloseEdit} title="Editar Prompt">
+      <Modal open={!!editingPrompt} onClose={handleCloseEdit} title="Editar Prompt" size="lg">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <div className="w-full">
             <label htmlFor="edit-prompt" className="block text-sm font-medium text-text-main mb-1">
@@ -157,7 +161,7 @@ export function Prompts() {
             <textarea
               {...registerEdit("prompt")}
               id="edit-prompt"
-              rows={6}
+              rows={12}
               placeholder="Conteúdo do prompt"
               className="w-full rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors resize-vertical"
             />

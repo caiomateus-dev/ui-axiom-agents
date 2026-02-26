@@ -32,10 +32,12 @@ test.describe("Navigation", () => {
 
   test("sidebar collapse toggle works", async ({ authenticatedPage: page }) => {
     await page.goto("/");
-    const toggleButton = page.getByRole("button", { name: /collapse|sidebar|menu/i }).first();
+    // The collapse button has title "Recolher" when expanded
+    const toggleButton = page.locator("button[title='Recolher']");
     if (await toggleButton.isVisible()) {
       await toggleButton.click();
-      // Sidebar should be collapsed - navigation links text may be hidden
+      // After collapse, the button title changes to "Expandir"
+      await expect(page.locator("button[title='Expandir']")).toBeVisible();
     }
   });
 });

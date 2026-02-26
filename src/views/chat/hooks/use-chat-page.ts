@@ -1,6 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+import type { AutocompleteOption } from "@/components";
+
+import { listAgents } from "@/views/agents/api/list-agents";
 
 import { resetChatSession } from "../api/reset-session";
 import { sendMessage } from "../api/send-message";
@@ -12,13 +16,20 @@ interface Message {
 }
 
 export function useChatPage() {
-  const [agentId, setAgentId] = useState(0);
+  const [agentId, setAgentId] = useState<number | null>(null);
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const agents = useQuery({ queryKey: ["agents"], queryFn: listAgents });
+
+  const agentOptions: AutocompleteOption[] = useMemo(
+    () => (agents.data ?? []).map((a) => ({ value: a.id, label: a.name })),
+    [agents.data],
+  );
+
   const sendMutation = useMutation({
-    mutationFn: (text: string) => sendMessage(agentId, text, sessionId),
+    mutationFn: (text: string) => sendMessage(agentId!, text, sessionId),
     onSuccess: (data) => {
       setSessionId(data.session_id);
       setMessages((prev) => [
@@ -34,7 +45,7 @@ export function useChatPage() {
 
   const resetMutation = useMutation({
     mutationFn: () => {
-      if (!sessionId) return Promise.resolve();
+      if (!sessionId || !agentId) return Promise.resolve();
       return resetChatSession(sessionId, agentId);
     },
     onSuccess: () => {
@@ -64,13 +75,17 @@ export function useChatPage() {
     resetMutation.mutate();
   }
 
-  function handleAgentIdChange(value: string) {
-    setAgentId(Number(value) || 0);
+  function handleAgentIdInput(value: string) {
+    const num = Number(value);
+    setAgentId(num > 0 ? num : null);
   }
 
   return {
     agentId,
-    handleAgentIdChange,
+    setAgentId,
+    handleAgentIdInput,
+    agentOptions,
+    isAgentsLoading: agents.isLoading,
     sessionId,
     messages,
     messagesEndRef,

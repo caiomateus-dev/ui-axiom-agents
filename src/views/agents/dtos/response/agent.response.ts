@@ -1,9 +1,10 @@
 export interface AgentResponse {
   id: number;
   name: string;
-  description: string;
-  model: string;
+  display_name: string;
+  description: string | null;
   is_active: boolean;
+  metadata: Record<string, unknown>;
   created_at: string;
   updated_at: string;
 }
