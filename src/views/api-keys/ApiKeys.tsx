@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal, DataTable } from "@/components";
+import { Badge, Button, Input, Modal, DataTable, Tooltip } from "@/components";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
 import { formatDate, maskKey } from "@/utils";
@@ -77,12 +77,16 @@ export function ApiKeys() {
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
-          <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
-            <Pencil className="w-3.5 h-3.5" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeletingKey(row)}>
-            <Trash2 className="w-3.5 h-3.5 text-error-text" />
-          </Button>
+          <Tooltip content="Editar">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
+              <Pencil className="w-3.5 h-3.5" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Excluir">
+            <Button variant="ghost" size="sm" onClick={() => setDeletingKey(row)}>
+              <Trash2 className="w-3.5 h-3.5 text-error-text" />
+            </Button>
+          </Tooltip>
         </div>
       ),
     },

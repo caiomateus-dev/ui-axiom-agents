@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Link, Navigate } from "react-router";
 
 import { useTheme } from "@/contexts";
 
@@ -62,6 +62,12 @@ export function Login() {
         </form>
 
         {apiError && <p className="text-sm text-error-text mt-3">{apiError}</p>}
+
+        <div className="mt-4 text-center">
+          <Link to="/esqueci-senha" className="text-sm text-brand-500 hover:text-brand-600">
+            Esqueci minha senha
+          </Link>
+        </div>
       </div>
     </div>
   );

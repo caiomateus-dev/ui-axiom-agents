@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
+import { Badge, Button, Input, Modal, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -74,12 +74,16 @@ export function VectorStores() {
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
-          <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
-            <Pencil className="w-4 h-4" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeletingStore(row)}>
-            <Trash2 className="w-4 h-4 text-error-text" />
-          </Button>
+          <Tooltip content="Editar">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
+              <Pencil className="w-4 h-4" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Excluir">
+            <Button variant="ghost" size="sm" onClick={() => setDeletingStore(row)}>
+              <Trash2 className="w-4 h-4 text-error-text" />
+            </Button>
+          </Tooltip>
         </div>
       ),
     },

@@ -1,6 +1,6 @@
 import { RotateCcw } from "lucide-react";
 
-import { Button, Input, Spinner } from "@/components";
+import { Autocomplete, Button, Input, Spinner } from "@/components";
 
 import { ChatBubble, ChatInput } from "./components";
 import { useChatPage } from "./hooks";
@@ -8,7 +8,10 @@ import { useChatPage } from "./hooks";
 export function Chat() {
   const {
     agentId,
-    handleAgentIdChange,
+    setAgentId,
+    handleAgentIdInput,
+    agentOptions,
+    isAgentsLoading,
     sessionId,
     messages,
     messagesEndRef,
@@ -23,13 +26,23 @@ export function Chat() {
     <div className="h-[calc(100vh-(--spacing(12)))] flex flex-col">
       {/* Top Bar */}
       <div className="flex items-center gap-4 px-4 py-3 border-b border-border-subtle bg-bg-card">
-        <div className="w-40">
+        <div className="w-24">
           <Input
-            id="agent_id"
+            id="agent_id_input"
             type="number"
-            placeholder="Agent ID"
-            value={agentId || ""}
-            onChange={(e) => handleAgentIdChange(e.target.value)}
+            value={agentId ?? ""}
+            onChange={(e) => handleAgentIdInput(e.target.value)}
+            placeholder="ID"
+          />
+        </div>
+        <div className="w-64">
+          <Autocomplete
+            id="agent_id"
+            options={agentOptions}
+            value={agentId}
+            onChange={setAgentId}
+            placeholder="Buscar por nome..."
+            isLoading={isAgentsLoading}
           />
         </div>
         {sessionId && <span className="text-xs text-text-muted truncate">Sessão: {sessionId}</span>}
@@ -52,9 +65,9 @@ export function Chat() {
         {messages.length === 0 && !isSending && (
           <div className="flex-1 flex items-center justify-center">
             <p className="text-sm text-text-muted">
-              {agentId > 0
+              {agentId
                 ? "Envie uma mensagem para começar a conversa."
-                : "Informe o Agent ID para começar."}
+                : "Selecione um agent para começar."}
             </p>
           </div>
         )}

@@ -22,7 +22,6 @@ test.describe("Agents", () => {
     await page.getByRole("button", { name: /novo agent/i }).click();
 
     await page.locator('input[name="name"]').fill("New Agent");
-    await page.locator('input[name="model"]').fill("gpt-4");
     await page.getByRole("dialog").getByRole("button", { name: /criar/i }).click();
 
     await expect(page.getByText(/sucesso/i)).toBeVisible();

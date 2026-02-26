@@ -1,6 +1,6 @@
 import { Pencil, RefreshCw } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
+import { Badge, Button, Input, Modal, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -59,9 +59,11 @@ export function Tools() {
       header: "Ações",
       align: "right",
       accessor: (row) => (
-        <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
-          <Pencil className="w-4 h-4" />
-        </Button>
+        <Tooltip content="Editar">
+          <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
+            <Pencil className="w-4 h-4" />
+          </Button>
+        </Tooltip>
       ),
     },
   ];

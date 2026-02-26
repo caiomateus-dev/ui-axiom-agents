@@ -8,10 +8,12 @@ import { Applications } from "@/views/applications";
 import { AuditLogs } from "@/views/audit-logs";
 import { Chat } from "@/views/chat";
 import { Dashboard } from "@/views/dashboard";
+import { ForgotPassword } from "@/views/forgot-password";
 import { Login } from "@/views/login";
 import { McpServers } from "@/views/mcp-servers";
 import { Organizations } from "@/views/organizations";
 import { Prompts } from "@/views/prompts";
+import { ResetPassword } from "@/views/reset-password";
 import { Tools } from "@/views/tools";
 import { Users } from "@/views/users";
 import { VectorStores } from "@/views/vector-stores";
@@ -21,6 +23,14 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/esqueci-senha",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/redefinir-senha",
+    element: <ResetPassword />,
   },
   {
     path: "/",

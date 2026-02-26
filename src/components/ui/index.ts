@@ -1,3 +1,5 @@
+export { Autocomplete } from "./Autocomplete";
+export type { AutocompleteOption } from "./Autocomplete";
 export { Badge } from "./Badge";
 export { Button } from "./Button";
 export { DataTable } from "./DataTable";
@@ -6,3 +8,4 @@ export { Input } from "./Input";
 export { Modal } from "./Modal";
 export { Spinner } from "./Spinner";
 export { ToastContainer } from "./ToastContainer";
+export { Tooltip } from "./Tooltip";

@@ -1,6 +1,6 @@
 import { Lock, Pencil, Plus, Search, Trash2, Unlock } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
+import { Badge, Button, Input, Modal, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -92,36 +92,44 @@ export function Users() {
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
-          <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
-            <Pencil className="w-3.5 h-3.5" />
-          </Button>
+          <Tooltip content="Editar">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
+              <Pencil className="w-3.5 h-3.5" />
+            </Button>
+          </Tooltip>
           {row.is_active ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleBlock(row)}
-              disabled={isBlocking}
-            >
-              <Lock className="w-3.5 h-3.5 text-warning-text" />
-            </Button>
+            <Tooltip content="Bloquear">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleBlock(row)}
+                disabled={isBlocking}
+              >
+                <Lock className="w-3.5 h-3.5 text-warning-text" />
+              </Button>
+            </Tooltip>
           ) : (
+            <Tooltip content="Desbloquear">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleUnblock(row)}
+                disabled={isUnblocking}
+              >
+                <Unlock className="w-3.5 h-3.5 text-success-text" />
+              </Button>
+            </Tooltip>
+          )}
+          <Tooltip content="Excluir">
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => handleUnblock(row)}
-              disabled={isUnblocking}
+              onClick={() => handleOpenDelete(row)}
+              disabled={isDeleting}
             >
-              <Unlock className="w-3.5 h-3.5 text-success-text" />
+              <Trash2 className="w-3.5 h-3.5 text-error-text" />
             </Button>
-          )}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => handleOpenDelete(row)}
-            disabled={isDeleting}
-          >
-            <Trash2 className="w-3.5 h-3.5 text-error-text" />
-          </Button>
+          </Tooltip>
         </div>
       ),
     },

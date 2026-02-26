@@ -15,7 +15,7 @@ describe("useChatPage", () => {
       wrapper: createQueryWrapper(),
     });
 
-    expect(result.current.agentId).toBe(0);
+    expect(result.current.agentId).toBeNull();
     expect(result.current.messages).toEqual([]);
     expect(result.current.sessionId).toBeUndefined();
   });
@@ -25,20 +25,21 @@ describe("useChatPage", () => {
       wrapper: createQueryWrapper(),
     });
 
-    act(() => result.current.handleAgentIdChange("5"));
+    act(() => result.current.setAgentId(5));
     expect(result.current.agentId).toBe(5);
   });
 
-  it("handles non-numeric agent id input", () => {
+  it("clears agent id", () => {
     const { result } = renderHook(() => useChatPage(), {
       wrapper: createQueryWrapper(),
     });
 
-    act(() => result.current.handleAgentIdChange("abc"));
-    expect(result.current.agentId).toBe(0);
+    act(() => result.current.setAgentId(5));
+    act(() => result.current.setAgentId(null));
+    expect(result.current.agentId).toBeNull();
   });
 
-  it("does not send when agentId is 0", () => {
+  it("does not send when agentId is null", () => {
     const { result } = renderHook(() => useChatPage(), {
       wrapper: createQueryWrapper(),
     });
@@ -64,7 +65,7 @@ describe("useChatPage", () => {
       wrapper: createQueryWrapper(),
     });
 
-    act(() => result.current.handleAgentIdChange("1"));
+    act(() => result.current.setAgentId(1));
     act(() => result.current.handleSend("Hello"));
 
     expect(result.current.messages).toHaveLength(1);
@@ -99,7 +100,7 @@ describe("useChatPage", () => {
       wrapper: createQueryWrapper(),
     });
 
-    act(() => result.current.handleAgentIdChange("1"));
+    act(() => result.current.setAgentId(1));
     act(() => result.current.handleSend("Hello"));
 
     await waitFor(() => {
@@ -112,5 +113,43 @@ describe("useChatPage", () => {
       expect(result.current.messages).toEqual([]);
       expect(result.current.sessionId).toBeUndefined();
     });
+  });
+
+  it("sets agent id from text input", () => {
+    const { result } = renderHook(() => useChatPage(), {
+      wrapper: createQueryWrapper(),
+    });
+
+    act(() => result.current.handleAgentIdInput("7"));
+    expect(result.current.agentId).toBe(7);
+  });
+
+  it("clears agent id when input is empty or invalid", () => {
+    const { result } = renderHook(() => useChatPage(), {
+      wrapper: createQueryWrapper(),
+    });
+
+    act(() => result.current.handleAgentIdInput("5"));
+    expect(result.current.agentId).toBe(5);
+
+    act(() => result.current.handleAgentIdInput(""));
+    expect(result.current.agentId).toBeNull();
+
+    act(() => result.current.handleAgentIdInput("3"));
+    act(() => result.current.handleAgentIdInput("0"));
+    expect(result.current.agentId).toBeNull();
+  });
+
+  it("provides agent options from API", async () => {
+    const { result } = renderHook(() => useChatPage(), {
+      wrapper: createQueryWrapper(),
+    });
+
+    await waitFor(() => {
+      expect(result.current.agentOptions.length).toBeGreaterThan(0);
+    });
+
+    expect(result.current.agentOptions[0]).toHaveProperty("value");
+    expect(result.current.agentOptions[0]).toHaveProperty("label");
   });
 });

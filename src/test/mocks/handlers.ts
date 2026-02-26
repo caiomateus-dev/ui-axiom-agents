@@ -38,24 +38,40 @@ export const handlers = [
     return new HttpResponse(null, { status: 401 });
   }),
 
+  http.post(`${API_URL}/auth/forgot-password`, () => {
+    return HttpResponse.json({
+      message: "Se o email estiver cadastrado, você receberá um link para redefinir sua senha.",
+    });
+  }),
+
+  http.post(`${API_URL}/auth/reset-password`, async ({ request }) => {
+    const body = (await request.json()) as { token: string };
+    if (body.token === "valid-test-token") {
+      return HttpResponse.json({ message: "Senha redefinida com sucesso." });
+    }
+    return new HttpResponse(JSON.stringify({ message: "Token inválido" }), { status: 400 });
+  }),
+
   // Agents
   http.get(`${API_URL}/agents`, () => {
     return HttpResponse.json([
       {
         id: 1,
         name: "Agent 1",
+        display_name: "Agent 1",
         description: "Test agent",
-        model: "gpt-4",
         is_active: true,
+        metadata: {},
         created_at: "2024-01-01T00:00:00Z",
         updated_at: "2024-01-01T00:00:00Z",
       },
       {
         id: 2,
         name: "Agent 2",
+        display_name: "Agent 2",
         description: "Another agent",
-        model: "gpt-3.5",
         is_active: false,
+        metadata: {},
         created_at: "2024-01-02T00:00:00Z",
         updated_at: "2024-01-02T00:00:00Z",
       },
@@ -66,9 +82,10 @@ export const handlers = [
     return HttpResponse.json({
       id: Number(params.id),
       name: "Agent 1",
+      display_name: "Agent 1",
       description: "Test agent",
-      model: "gpt-4",
       is_active: true,
+      metadata: {},
       created_at: "2024-01-01T00:00:00Z",
       updated_at: "2024-01-01T00:00:00Z",
     });
