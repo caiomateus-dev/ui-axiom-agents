@@ -32,33 +32,87 @@ interface NavItem {
   label: string;
 }
 
-const navItems: NavItem[] = [
-  { to: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { to: "/agents", icon: Bot, label: "Agents" },
-  { to: "/applications", icon: AppWindow, label: "Applications" },
-  { to: "/api-keys", icon: Key, label: "API Keys" },
-  { to: "/tools", icon: Wrench, label: "Tools" },
-  { to: "/prompts", icon: MessageSquare, label: "Prompts" },
-  { to: "/vector-stores", icon: Database, label: "Vector Stores" },
-  { to: "/webhooks", icon: Webhook, label: "Webhooks" },
-  { to: "/mcp-servers", icon: Server, label: "MCP Servers" },
-  { to: "/chat", icon: MessageCircle, label: "Chat" },
-  { to: "/audit-logs", icon: ScrollText, label: "Audit Logs" },
-  { to: "/users", icon: Users, label: "Usuários" },
-];
+interface NavSection {
+  label?: string;
+  items: NavItem[];
+}
 
 export function Sidebar() {
   const { collapsed, mobileOpen, toggleSidebar, openMobile, closeMobile } = useSidebar();
   const { user, logout } = useAuth();
   const { theme } = useTheme();
-  const { organizations } = useOrganization();
+  const { organizations, isOrgAdmin } = useOrganization();
 
   const isSuperuser = user?.is_superuser === true;
 
-  const allNavItems: NavItem[] = [
-    ...navItems,
-    ...(isSuperuser ? [{ to: "/organizations", icon: Building2, label: "Organizations" }] : []),
+  const sections: NavSection[] = [
+    {
+      items: [{ to: "/", icon: LayoutDashboard, label: "Dashboard" }],
+    },
+    {
+      label: "Organização",
+      items: [
+        { to: "/agents", icon: Bot, label: "Agents" },
+        { to: "/applications", icon: AppWindow, label: "Applications" },
+        { to: "/mcp-servers", icon: Server, label: "MCP Servers" },
+      ],
+    },
+    {
+      label: "Configuração",
+      items: [
+        { to: "/prompts", icon: MessageSquare, label: "Prompts" },
+        { to: "/vector-stores", icon: Database, label: "Vector Stores" },
+        { to: "/webhooks", icon: Webhook, label: "Webhooks" },
+        { to: "/tools", icon: Wrench, label: "Tools" },
+      ],
+    },
+    {
+      label: "Comunicação",
+      items: [{ to: "/chat", icon: MessageCircle, label: "Chat" }],
+    },
+    ...(isOrgAdmin || isSuperuser
+      ? [
+          {
+            label: "Gestão",
+            items: [{ to: "/api-keys", icon: Key, label: "API Keys" }],
+          },
+        ]
+      : []),
+    ...(isSuperuser
+      ? [
+          {
+            label: "Admin",
+            items: [
+              { to: "/audit-logs", icon: ScrollText, label: "Audit Logs" },
+              { to: "/users", icon: Users, label: "Usuários" },
+              { to: "/organizations", icon: Building2, label: "Organizations" },
+            ],
+          },
+        ]
+      : []),
   ];
+
+  const renderNavItem = (item: NavItem) => (
+    <NavLink
+      key={item.to}
+      to={item.to}
+      end={item.to === "/"}
+      title={collapsed ? item.label : undefined}
+      onClick={closeMobile}
+      className={({ isActive }) =>
+        `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+          collapsed ? "justify-center" : ""
+        } ${
+          isActive
+            ? "bg-brand-50 text-brand-500 font-medium"
+            : "text-text-muted hover:text-text-main hover:bg-brand-50"
+        }`
+      }
+    >
+      <item.icon className="w-5 h-5 shrink-0" />
+      {!collapsed && <span>{item.label}</span>}
+    </NavLink>
+  );
 
   const sidebarContent = (
     <aside
@@ -101,26 +155,18 @@ export function Sidebar() {
 
       {/* Nav links */}
       <nav className="flex-1 overflow-y-auto px-2 space-y-1">
-        {allNavItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === "/"}
-            title={collapsed ? item.label : undefined}
-            onClick={closeMobile}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                collapsed ? "justify-center" : ""
-              } ${
-                isActive
-                  ? "bg-brand-50 text-brand-500 font-medium"
-                  : "text-text-muted hover:text-text-main hover:bg-brand-50"
-              }`
-            }
-          >
-            <item.icon className="w-5 h-5 shrink-0" />
-            {!collapsed && <span>{item.label}</span>}
-          </NavLink>
+        {sections.map((section, idx) => (
+          <div key={section.label ?? idx}>
+            {section.label && !collapsed && (
+              <div className="px-3 pt-4 pb-1 text-xs font-medium text-text-muted uppercase tracking-wider">
+                {section.label}
+              </div>
+            )}
+            {section.label && collapsed && idx > 0 && (
+              <div className="border-t border-border-subtle my-2 mx-2" />
+            )}
+            {section.items.map(renderNavItem)}
+          </div>
         ))}
       </nav>
 
