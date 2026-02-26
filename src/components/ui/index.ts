@@ -6,6 +6,7 @@ export { DataTable } from "./DataTable";
 export type { ColumnDef, DataTableProps } from "./DataTable";
 export { Input } from "./Input";
 export { Modal } from "./Modal";
+export { SlidePanel } from "./SlidePanel";
 export { Spinner } from "./Spinner";
 export { ToastContainer } from "./ToastContainer";
 export { Tooltip } from "./Tooltip";

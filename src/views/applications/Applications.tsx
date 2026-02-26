@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal, Tooltip } from "@/components";
+import { Badge, Button, Input, SlidePanel, Tooltip } from "@/components";
 import type { ColumnDef } from "@/components/ui/DataTable";
 import { DataTable } from "@/components/ui/DataTable";
 
@@ -95,7 +95,7 @@ export function Applications() {
         emptyMessage='Nenhuma application encontrada. Crie a primeira clicando em "Nova Application".'
       />
 
-      <Modal
+      <SlidePanel
         open={isModalOpen}
         onClose={handleCloseModal}
         title={editingItem ? "Editar Application" : "Nova Application"}
@@ -115,7 +115,7 @@ export function Applications() {
             placeholder="Descrição da application"
             error={errors.description?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseModal}>
               Cancelar
             </Button>
@@ -124,7 +124,7 @@ export function Applications() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
     </div>
   );
 }

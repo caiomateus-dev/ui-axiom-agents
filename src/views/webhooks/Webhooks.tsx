@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal, Tooltip } from "@/components";
+import { Badge, Button, Input, Modal, SlidePanel, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -139,8 +139,8 @@ export function Webhooks() {
         />
       )}
 
-      {/* Create Modal */}
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Novo Webhook">
+      {/* Create Panel */}
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo Webhook">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             {...registerCreate("agent_id", { valueAsNumber: true })}
@@ -171,7 +171,7 @@ export function Webhooks() {
             placeholder="Token"
             error={createErrors.auth_token?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>
               Cancelar
             </Button>
@@ -180,10 +180,10 @@ export function Webhooks() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
-      {/* Edit Modal */}
-      <Modal open={!!editingWebhook} onClose={handleCloseEdit} title="Editar Webhook">
+      {/* Edit Panel */}
+      <SlidePanel open={!!editingWebhook} onClose={handleCloseEdit} title="Editar Webhook">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...registerEdit("url")}
@@ -206,7 +206,7 @@ export function Webhooks() {
             placeholder="Token (deixe vazio para manter o atual)"
             error={editErrors.auth_token?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
@@ -215,7 +215,7 @@ export function Webhooks() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
       {/* Delete Confirmation Modal */}
       <Modal

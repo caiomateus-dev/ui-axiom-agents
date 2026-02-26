@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal, Tooltip } from "@/components";
+import { Badge, Button, Input, Modal, SlidePanel, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -107,8 +107,8 @@ export function Prompts() {
         emptyMessage='Nenhum prompt encontrado. Crie o primeiro clicando em "Novo Prompt".'
       />
 
-      {/* Create Modal */}
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Novo Prompt" size="lg">
+      {/* Create Panel */}
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo Prompt" size="lg">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             {...registerCreate("agent_id", { valueAsNumber: true })}
@@ -140,7 +140,7 @@ export function Prompts() {
             placeholder="Descrição do prompt"
             error={createErrors.description?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>
               Cancelar
             </Button>
@@ -149,10 +149,10 @@ export function Prompts() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
-      {/* Edit Modal */}
-      <Modal open={!!editingPrompt} onClose={handleCloseEdit} title="Editar Prompt" size="lg">
+      {/* Edit Panel */}
+      <SlidePanel open={!!editingPrompt} onClose={handleCloseEdit} title="Editar Prompt" size="lg">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <div className="w-full">
             <label htmlFor="edit-prompt" className="block text-sm font-medium text-text-main mb-1">
@@ -176,7 +176,7 @@ export function Prompts() {
             placeholder="Descrição do prompt"
             error={editErrors.description?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
@@ -185,7 +185,7 @@ export function Prompts() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
       {/* Delete Confirmation Modal */}
       <Modal

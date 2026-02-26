@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2, UserPlus, Users } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
+import { Badge, Button, Input, Modal, SlidePanel, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -91,15 +91,21 @@ export function Organizations() {
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
-          <Button variant="ghost" size="sm" onClick={() => handleViewMembers(row)}>
-            <Users className="w-3.5 h-3.5" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
-            <Pencil className="w-3.5 h-3.5" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={() => handleOpenDelete(row)}>
-            <Trash2 className="w-3.5 h-3.5 text-error-text" />
-          </Button>
+          <Tooltip content="Membros">
+            <Button variant="ghost" size="sm" onClick={() => handleViewMembers(row)}>
+              <Users className="w-3.5 h-3.5" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Editar">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenEdit(row)}>
+              <Pencil className="w-3.5 h-3.5" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Excluir">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenDelete(row)}>
+              <Trash2 className="w-3.5 h-3.5 text-error-text" />
+            </Button>
+          </Tooltip>
         </div>
       ),
     },
@@ -143,9 +149,11 @@ export function Organizations() {
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
-          <Button variant="ghost" size="sm" onClick={() => handleOpenRemoveMember(row)}>
-            <Trash2 className="w-3.5 h-3.5 text-error-text" />
-          </Button>
+          <Tooltip content="Remover">
+            <Button variant="ghost" size="sm" onClick={() => handleOpenRemoveMember(row)}>
+              <Trash2 className="w-3.5 h-3.5 text-error-text" />
+            </Button>
+          </Tooltip>
         </div>
       ),
     },
@@ -171,8 +179,8 @@ export function Organizations() {
         emptyMessage="Nenhuma organizacao encontrada."
       />
 
-      {/* Create Modal */}
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Nova Organizacao">
+      {/* Create Panel */}
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Nova Organizacao">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             {...createRegister("name")}
@@ -188,7 +196,7 @@ export function Organizations() {
             placeholder="minha-empresa"
             error={createErrors.slug?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>
               Cancelar
             </Button>
@@ -197,10 +205,10 @@ export function Organizations() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
-      {/* Edit Modal */}
-      <Modal open={!!editingOrg} onClose={handleCloseEdit} title="Editar Organizacao">
+      {/* Edit Panel */}
+      <SlidePanel open={!!editingOrg} onClose={handleCloseEdit} title="Editar Organizacao">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...editRegister("name")}
@@ -224,7 +232,7 @@ export function Organizations() {
             />
             <span className="text-sm text-text-main">Ativo</span>
           </label>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
@@ -233,7 +241,7 @@ export function Organizations() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
       {/* Delete Confirmation Modal */}
       <Modal open={!!deletingOrg} onClose={handleCloseDelete} title="Excluir Organizacao">
@@ -254,22 +262,81 @@ export function Organizations() {
         </div>
       </Modal>
 
-      {/* Members Modal */}
-      <Modal
+      {/* Members Panel */}
+      <SlidePanel
         open={!!viewingOrg}
         onClose={handleCloseMembers}
         title={`Membros - ${viewingOrg?.name ?? ""}`}
+        size="lg"
       >
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-text-muted">
-              {members.length} membro{members.length !== 1 ? "s" : ""}
-            </p>
-            <Button size="sm" onClick={handleOpenInvite}>
-              <UserPlus className="w-4 h-4" />
-              Convidar
-            </Button>
-          </div>
+        <div className="flex flex-col gap-5">
+          {isInviteOpen ? (
+            <div className="rounded-lg border border-border-subtle bg-bg-canvas p-4">
+              <h3 className="text-sm font-semibold text-text-main mb-4">Convidar Membro</h3>
+              <form onSubmit={onInviteSubmit} className="flex flex-col gap-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <Input
+                    {...inviteRegister("name")}
+                    id="invite-name"
+                    label="Nome"
+                    placeholder="Nome do membro"
+                    error={inviteErrors.name?.message}
+                  />
+                  <Input
+                    {...inviteRegister("email")}
+                    id="invite-email"
+                    label="E-mail"
+                    placeholder="email@exemplo.com"
+                    error={inviteErrors.email?.message}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Input
+                    {...inviteRegister("password")}
+                    id="invite-password"
+                    label="Senha"
+                    type="password"
+                    placeholder="Minimo 6 caracteres"
+                    error={inviteErrors.password?.message}
+                  />
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="invite-role" className="text-sm font-medium text-text-main">
+                      Role
+                    </label>
+                    <select
+                      {...inviteRegister("role")}
+                      id="invite-role"
+                      className="rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors"
+                    >
+                      <option value="member">Member</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                    {inviteErrors.role?.message && (
+                      <span className="text-xs text-error-text">{inviteErrors.role.message}</span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 pt-2">
+                  <Button type="button" variant="secondary" size="sm" onClick={handleCloseInvite}>
+                    Cancelar
+                  </Button>
+                  <Button type="submit" size="sm" loading={isInviting}>
+                    Convidar
+                  </Button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-text-muted">
+                {members.length} membro{members.length !== 1 ? "s" : ""}
+              </p>
+              <Button size="sm" onClick={handleOpenInvite}>
+                <UserPlus className="w-4 h-4" />
+                Convidar
+              </Button>
+            </div>
+          )}
 
           <DataTable
             columns={memberColumns}
@@ -280,59 +347,7 @@ export function Organizations() {
             emptyMessage="Nenhum membro encontrado."
           />
         </div>
-      </Modal>
-
-      {/* Invite Member Modal */}
-      <Modal open={isInviteOpen} onClose={handleCloseInvite} title="Convidar Membro">
-        <form onSubmit={onInviteSubmit} className="flex flex-col gap-4">
-          <Input
-            {...inviteRegister("name")}
-            id="invite-name"
-            label="Nome"
-            placeholder="Nome do membro"
-            error={inviteErrors.name?.message}
-          />
-          <Input
-            {...inviteRegister("email")}
-            id="invite-email"
-            label="E-mail"
-            placeholder="email@exemplo.com"
-            error={inviteErrors.email?.message}
-          />
-          <Input
-            {...inviteRegister("password")}
-            id="invite-password"
-            label="Senha"
-            type="password"
-            placeholder="Minimo 6 caracteres"
-            error={inviteErrors.password?.message}
-          />
-          <div className="flex flex-col gap-1">
-            <label htmlFor="invite-role" className="text-sm font-medium text-text-main">
-              Role
-            </label>
-            <select
-              {...inviteRegister("role")}
-              id="invite-role"
-              className="rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors"
-            >
-              <option value="member">Member</option>
-              <option value="admin">Admin</option>
-            </select>
-            {inviteErrors.role?.message && (
-              <span className="text-xs text-error-text">{inviteErrors.role.message}</span>
-            )}
-          </div>
-          <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="secondary" onClick={handleCloseInvite}>
-              Cancelar
-            </Button>
-            <Button type="submit" loading={isInviting}>
-              Convidar
-            </Button>
-          </div>
-        </form>
-      </Modal>
+      </SlidePanel>
 
       {/* Remove Member Confirmation Modal */}
       <Modal open={!!removingMember} onClose={handleCloseRemoveMember} title="Remover Membro">

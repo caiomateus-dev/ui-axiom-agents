@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal, Tooltip } from "@/components";
+import { Badge, Button, Input, Modal, SlidePanel, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -113,8 +113,8 @@ export function McpServers() {
         emptyMessage='Nenhum MCP server encontrado. Crie o primeiro clicando em "Novo Server".'
       />
 
-      {/* Create Modal */}
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Novo MCP Server">
+      {/* Create Panel */}
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo MCP Server">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             id="name"
@@ -158,7 +158,7 @@ export function McpServers() {
             />
           </div>
           {formError && <p className="text-xs text-error-text">{formError}</p>}
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>
               Cancelar
             </Button>
@@ -167,10 +167,10 @@ export function McpServers() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
-      {/* Edit Modal */}
-      <Modal open={!!editingServer} onClose={handleCloseEdit} title="Editar MCP Server">
+      {/* Edit Panel */}
+      <SlidePanel open={!!editingServer} onClose={handleCloseEdit} title="Editar MCP Server">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             id="edit-name"
@@ -214,7 +214,7 @@ export function McpServers() {
             />
           </div>
           {editError && <p className="text-xs text-error-text">{editError}</p>}
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
@@ -223,7 +223,7 @@ export function McpServers() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
       {/* Delete Confirmation Modal */}
       <Modal

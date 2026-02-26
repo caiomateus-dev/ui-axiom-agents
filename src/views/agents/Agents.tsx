@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 
-import { Badge, Button, Input, Modal } from "@/components";
+import { Badge, Button, Input, SlidePanel } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -71,7 +71,7 @@ export function Agents() {
         onRowClick={(row) => navigateToAgent(row.id)}
       />
 
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Novo Agent">
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Novo Agent">
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           <Input
             {...register("name")}
@@ -87,7 +87,7 @@ export function Agents() {
             placeholder="Descrição do agent"
             error={errors.description?.message}
           />
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>
               Cancelar
             </Button>
@@ -96,7 +96,7 @@ export function Agents() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
     </div>
   );
 }

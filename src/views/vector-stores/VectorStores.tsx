@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { Badge, Button, Input, Modal, Tooltip } from "@/components";
+import { Badge, Button, Input, Modal, SlidePanel, Tooltip } from "@/components";
 import { DataTable } from "@/components/ui/DataTable";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
@@ -109,8 +109,13 @@ export function VectorStores() {
         emptyMessage='Nenhum vector store encontrado. Crie o primeiro clicando em "Novo Vector Store".'
       />
 
-      {/* Create Modal */}
-      <Modal open={isCreateOpen} onClose={handleCloseCreate} title="Novo Vector Store">
+      {/* Create Panel */}
+      <SlidePanel
+        open={isCreateOpen}
+        onClose={handleCloseCreate}
+        title="Novo Vector Store"
+        size="lg"
+      >
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             {...registerCreate("agent_id", { valueAsNumber: true })}
@@ -162,7 +167,7 @@ export function VectorStores() {
               className="w-full text-sm text-text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-brand-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-brand-600 file:cursor-pointer cursor-pointer"
             />
           </div>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseCreate}>
               Cancelar
             </Button>
@@ -171,10 +176,15 @@ export function VectorStores() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
-      {/* Edit Modal */}
-      <Modal open={!!editingStore} onClose={handleCloseEdit} title="Editar Vector Store">
+      {/* Edit Panel */}
+      <SlidePanel
+        open={!!editingStore}
+        onClose={handleCloseEdit}
+        title="Editar Vector Store"
+        size="lg"
+      >
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...registerEdit("titulo")}
@@ -221,7 +231,7 @@ export function VectorStores() {
               className="w-full text-sm text-text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-brand-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-brand-600 file:cursor-pointer cursor-pointer"
             />
           </div>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
@@ -230,7 +240,7 @@ export function VectorStores() {
             </Button>
           </div>
         </form>
-      </Modal>
+      </SlidePanel>
 
       {/* Delete Confirmation Modal */}
       <Modal
