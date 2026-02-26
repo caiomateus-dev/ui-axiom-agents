@@ -15,7 +15,17 @@ export const handlers = [
   http.get(`${API_URL}/auth/me`, ({ request }) => {
     const auth = request.headers.get("Authorization");
     if (auth?.includes("mock-access-token")) {
-      return HttpResponse.json({ id: 1, email: "test@test.com", name: "Test User" });
+      return HttpResponse.json({
+        id: 1,
+        email: "test@test.com",
+        name: "Test User",
+        is_staff: false,
+        is_superuser: true,
+        organizations: [
+          { id: 1, name: "Default Org", slug: "default", role: "admin" },
+          { id: 2, name: "Second Org", slug: "second", role: "member" },
+        ],
+      });
     }
     return new HttpResponse(null, { status: 401 });
   }),
@@ -170,6 +180,88 @@ export const handlers = [
 
   http.delete(`${API_URL}/applications/:id`, () => {
     return new HttpResponse(null, { status: 204 });
+  }),
+
+  // Organizations
+  http.get(`${API_URL}/organizations`, () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        name: "Default Org",
+        slug: "default",
+        is_active: true,
+        metadata: {},
+        members_count: 2,
+        created_at: "2024-01-01T00:00:00Z",
+        updated_at: "2024-01-01T00:00:00Z",
+      },
+      {
+        id: 2,
+        name: "Second Org",
+        slug: "second",
+        is_active: true,
+        metadata: {},
+        members_count: 1,
+        created_at: "2024-01-02T00:00:00Z",
+        updated_at: "2024-01-02T00:00:00Z",
+      },
+    ]);
+  }),
+
+  http.post(`${API_URL}/organizations`, async ({ request }) => {
+    const body = (await request.json()) as Record<string, unknown>;
+    return HttpResponse.json({
+      id: 3,
+      ...body,
+      is_active: true,
+      metadata: {},
+      members_count: 0,
+      created_at: "2024-01-03T00:00:00Z",
+      updated_at: "2024-01-03T00:00:00Z",
+    });
+  }),
+
+  http.put(`${API_URL}/organizations/:id`, () => {
+    return HttpResponse.json({ message: "atualizado" });
+  }),
+
+  http.delete(`${API_URL}/organizations/:id`, () => {
+    return HttpResponse.json({ message: "removido" });
+  }),
+
+  http.get(`${API_URL}/organizations/:id/members`, () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        organization_id: 1,
+        user_id: 1,
+        user_name: "Test User",
+        user_email: "test@test.com",
+        role: "admin",
+        is_active: true,
+        created_at: "2024-01-01T00:00:00Z",
+        updated_at: "2024-01-01T00:00:00Z",
+      },
+    ]);
+  }),
+
+  http.post(`${API_URL}/organizations/:id/members/invite`, async ({ request }) => {
+    const body = (await request.json()) as Record<string, unknown>;
+    return HttpResponse.json({
+      id: 2,
+      organization_id: 1,
+      user_id: 2,
+      user_name: body.name,
+      user_email: body.email,
+      role: body.role,
+      is_active: true,
+      created_at: "2024-01-03T00:00:00Z",
+      updated_at: "2024-01-03T00:00:00Z",
+    });
+  }),
+
+  http.delete(`${API_URL}/organizations/:id/members/:userId`, () => {
+    return HttpResponse.json({ message: "removido" });
   }),
 
   // Chat

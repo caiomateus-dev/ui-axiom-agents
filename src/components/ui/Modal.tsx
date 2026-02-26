@@ -33,6 +33,9 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
         className="bg-bg-card rounded-xl shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-auto"
         onClick={(e) => e.stopPropagation()}
       >

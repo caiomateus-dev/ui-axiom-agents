@@ -10,6 +10,7 @@ import { Chat } from "@/views/chat";
 import { Dashboard } from "@/views/dashboard";
 import { Login } from "@/views/login";
 import { McpServers } from "@/views/mcp-servers";
+import { Organizations } from "@/views/organizations";
 import { Prompts } from "@/views/prompts";
 import { Tools } from "@/views/tools";
 import { Users } from "@/views/users";
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
       { path: "chat", element: <Chat /> },
       { path: "audit-logs", element: <AuditLogs /> },
       { path: "users", element: <Users /> },
+      { path: "organizations", element: <Organizations /> },
     ],
   },
 ]);

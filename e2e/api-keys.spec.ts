@@ -12,23 +12,19 @@ test.describe("API Keys", () => {
 
   test("opens create modal", async ({ authenticatedPage: page }) => {
     await page.goto("/api-keys");
-    await page.getByRole("button", { name: /criar|nova|new|add/i }).click();
-    await expect(page.locator('input[name="name"]')).toBeVisible();
+    await page.getByRole("button", { name: /nova api key/i }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
   });
 
   test("creates a new api key", async ({ authenticatedPage: page }) => {
     await page.goto("/api-keys");
-    await page.getByRole("button", { name: /criar|nova|new|add/i }).click();
+    await page.getByRole("button", { name: /nova api key/i }).click();
 
+    // Select application
+    await page.locator("select#application_id").selectOption({ index: 1 });
     await page.locator('input[name="name"]').fill("New Key");
+    await page.getByRole("dialog").getByRole("button", { name: /criar/i }).click();
 
-    // Select application if there's a select field
-    const select = page.locator('select[name="application_id"]');
-    if (await select.isVisible()) {
-      await select.selectOption({ index: 1 });
-    }
-
-    await page.getByRole("button", { name: /criar|salvar|save|submit/i }).last().click();
-    await expect(page.getByText(/sucesso|success/i)).toBeVisible();
+    await expect(page.getByText(/sucesso/i)).toBeVisible();
   });
 });
