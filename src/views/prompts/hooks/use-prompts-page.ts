@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@/contexts/ToastContext";
 
+import { useAgents } from "@/views/agents/hooks/use-agents";
+
 import type { PromptFormData, PromptUpdateFormData } from "../dtos/request/prompt.schema";
 import { promptSchema, promptUpdateSchema } from "../dtos/request/prompt.schema";
 import type { PromptResponse } from "../dtos/response/prompt.response";
@@ -16,6 +18,7 @@ export function usePromptsPage() {
   const [editingPrompt, setEditingPrompt] = useState<PromptResponse | null>(null);
   const [deletingPrompt, setDeletingPrompt] = useState<PromptResponse | null>(null);
 
+  const { data: agents } = useAgents();
   const { data: prompts, isLoading, isError } = usePrompts();
   const createPrompt = useCreatePrompt();
   const updatePrompt = useUpdatePrompt();
@@ -93,6 +96,7 @@ export function usePromptsPage() {
 
   return {
     prompts,
+    agents,
     isLoading,
     isError,
     isCreateOpen,

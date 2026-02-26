@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@/contexts/ToastContext";
 
+import { useAgents } from "@/views/agents/hooks/use-agents";
+
 import type { VectorStoreFormData } from "../dtos/request/vector-store.schema";
 import { vectorStoreSchema } from "../dtos/request/vector-store.schema";
 import type { VectorStoreResponse } from "../dtos/response/vector-store.response";
@@ -23,6 +25,7 @@ export function useVectorStoresPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
 
+  const { data: agents } = useAgents();
   const { data: stores, isLoading, isError } = useVectorStores();
   const createStore = useCreateVectorStore();
   const updateStore = useUpdateVectorStore();
@@ -145,6 +148,7 @@ export function useVectorStoresPage() {
 
   return {
     stores,
+    agents,
     isLoading,
     isError,
     isCreateOpen,
