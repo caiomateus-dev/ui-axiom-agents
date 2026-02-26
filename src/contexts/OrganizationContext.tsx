@@ -1,10 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { api } from "@/core";
 
 import { useAuth } from "./AuthContext";
 import type { UserOrganization } from "./AuthContext";
+
+async function fetchAllOrganizations(): Promise<UserOrganization[]> {
+  const { data } = await api.get<{ id: number; name: string; slug: string }[]>("/organizations");
+  return data.map((o) => ({ id: o.id, name: o.name, slug: o.slug, role: "superuser" }));
+}
 
 interface OrganizationContextValue {
   currentOrg: UserOrganization | null;
@@ -19,7 +26,7 @@ const OrganizationContext = createContext<OrganizationContextValue | undefined>(
 export function OrganizationProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const organizations = user?.organizations ?? [];
+  const memberOrgs = user?.organizations ?? [];
 
   const [selectedOrgId, setSelectedOrgId] = useState<number | null>(() => {
     const stored = localStorage.getItem("organization_id");
@@ -27,6 +34,17 @@ export function OrganizationProvider({ children }: { children: ReactNode }) {
   });
 
   const isSuperuser = user?.is_superuser === true;
+
+  // Superusers fetch ALL organizations from the API
+  const { data: allOrgs } = useQuery({
+    queryKey: ["all-organizations"],
+    queryFn: fetchAllOrganizations,
+    enabled: isSuperuser && !!user,
+    staleTime: 60_000,
+  });
+
+  // For superusers: use fetched list; for normal users: use member orgs from auth
+  const organizations: UserOrganization[] = isSuperuser ? (allOrgs ?? memberOrgs) : memberOrgs;
 
   const currentOrg = useMemo(() => {
     // Superuser selected "Todas" (null)
