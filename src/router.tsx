@@ -11,7 +11,7 @@ import { Dashboard } from "@/views/dashboard";
 import { ForgotPassword } from "@/views/forgot-password";
 import { Login } from "@/views/login";
 import { McpServers } from "@/views/mcp-servers";
-import { Organizations } from "@/views/organizations";
+import { OrganizationMembers, Organizations } from "@/views/organizations";
 import { Prompts } from "@/views/prompts";
 import { ResetPassword } from "@/views/reset-password";
 import { Tools } from "@/views/tools";
@@ -50,6 +50,7 @@ export const router = createBrowserRouter([
       { path: "audit-logs", element: <AuditLogs /> },
       { path: "users", element: <Users /> },
       { path: "organizations", element: <Organizations /> },
+      { path: "organizations/:id/members", element: <OrganizationMembers /> },
     ],
   },
 ]);

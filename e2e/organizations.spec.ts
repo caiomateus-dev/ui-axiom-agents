@@ -45,12 +45,12 @@ test.describe("Organizations", () => {
     await expect(page.getByText(/excluir/i).first()).toBeVisible();
   });
 
-  test("opens members modal", async ({ authenticatedPage: page }) => {
+  test("navigates to members page", async ({ authenticatedPage: page }) => {
     await page.goto("/organizations");
     // Click the members button (Users icon) in the first data row
     const firstRow = page.locator("table tbody tr").first();
     await firstRow.locator("button").first().click();
-    await expect(page.getByRole("dialog")).toBeVisible();
+    await expect(page).toHaveURL(/organizations\/\d+\/members/);
     await expect(page.getByText("Test User")).toBeVisible();
   });
 

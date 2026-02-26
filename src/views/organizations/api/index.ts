@@ -1,3 +1,4 @@
+export { addMember } from "./add-member";
 export { createOrganization } from "./create-organization";
 export { deleteOrganization } from "./delete-organization";
 export { inviteMember } from "./invite-member";
