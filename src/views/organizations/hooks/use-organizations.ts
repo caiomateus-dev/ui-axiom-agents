@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  addMember,
   createOrganization,
   deleteOrganization,
   inviteMember,
@@ -53,6 +54,18 @@ export function useDeleteOrganization() {
   return useMutation({
     mutationFn: deleteOrganization,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+  });
+}
+
+export function useAddMember() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ orgId, data }: { orgId: number; data: { user_id: number; role: string } }) =>
+      addMember(orgId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["organization-members"] });
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
   });

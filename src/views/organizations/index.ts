@@ -1,3 +1,4 @@
+export { OrganizationMembers } from "./OrganizationMembers";
 export { Organizations } from "./Organizations";
 export {
   createOrganization,
@@ -9,6 +10,7 @@ export {
   updateOrganization,
 } from "./api";
 export {
+  useAddMember,
   useCreateOrganization,
   useDeleteOrganization,
   useInviteMember,
