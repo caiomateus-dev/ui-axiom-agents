@@ -71,7 +71,7 @@ export function Organizations() {
     },
     {
       id: "actions",
-      header: "Acoes",
+      header: "Ações",
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
@@ -102,10 +102,10 @@ export function Organizations() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-text-main">Organizations</h1>
+        <h1 className="text-2xl font-bold text-text-main">Organizações</h1>
         <Button onClick={handleOpenCreate}>
           <Plus className="w-4 h-4" />
-          Nova Organizacao
+          Nova Organização
         </Button>
       </div>
 
@@ -115,18 +115,18 @@ export function Organizations() {
         rowKey={(row) => row.id}
         isLoading={isLoading}
         isError={isError}
-        errorMessage="Erro ao carregar organizacoes. Tente novamente mais tarde."
-        emptyMessage="Nenhuma organizacao encontrada."
+        errorMessage="Erro ao carregar organizações. Tente novamente mais tarde."
+        emptyMessage="Nenhuma organização encontrada."
       />
 
       {/* Create Panel */}
-      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Nova Organizacao">
+      <SlidePanel open={isCreateOpen} onClose={handleCloseCreate} title="Nova Organização">
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
           <Input
             {...createRegister("name")}
             id="create-org-name"
             label="Nome"
-            placeholder="Nome da organizacao"
+            placeholder="Nome da organização"
             error={createErrors.name?.message}
           />
           <Input
@@ -148,13 +148,13 @@ export function Organizations() {
       </SlidePanel>
 
       {/* Edit Panel */}
-      <SlidePanel open={!!editingOrg} onClose={handleCloseEdit} title="Editar Organizacao">
+      <SlidePanel open={!!editingOrg} onClose={handleCloseEdit} title="Editar Organização">
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
           <Input
             {...editRegister("name")}
             id="edit-org-name"
             label="Nome"
-            placeholder="Nome da organizacao"
+            placeholder="Nome da organização"
             error={editErrors.name?.message}
           />
           <Input
@@ -184,11 +184,11 @@ export function Organizations() {
       </SlidePanel>
 
       {/* Delete Confirmation Modal */}
-      <Modal open={!!deletingOrg} onClose={handleCloseDelete} title="Excluir Organizacao">
+      <Modal open={!!deletingOrg} onClose={handleCloseDelete} title="Excluir Organização">
         <div className="flex flex-col gap-4">
           <p className="text-sm text-text-muted">
-            Tem certeza que deseja excluir a organizacao{" "}
-            <strong className="text-text-main">{deletingOrg?.name}</strong>? Esta acao nao pode ser
+            Tem certeza que deseja excluir a organização{" "}
+            <strong className="text-text-main">{deletingOrg?.name}</strong>? Esta ação não pode ser
             desfeita.
           </p>
           <div className="flex justify-end gap-2 pt-2">

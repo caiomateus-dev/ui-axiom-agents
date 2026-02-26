@@ -40,7 +40,7 @@ export function Webhooks() {
   const columns: ColumnDef<WebhookResponse>[] = [
     {
       id: "agent",
-      header: "Agent",
+      header: "Agente",
       accessor: (row) => <span className="font-medium text-text-main">{row.agent_name}</span>,
     },
     {
@@ -50,7 +50,7 @@ export function Webhooks() {
     },
     {
       id: "auth_type",
-      header: "Auth Type",
+      header: "Autenticação",
       accessor: (row) => <span className="text-text-muted">{row.auth_type || "-"}</span>,
     },
     {
@@ -106,7 +106,7 @@ export function Webhooks() {
           htmlFor="application_filter"
           className="block text-sm font-medium text-text-main mb-1"
         >
-          Application
+          Aplicação
         </label>
         <select
           id="application_filter"
@@ -114,7 +114,7 @@ export function Webhooks() {
           onChange={(e) => handleApplicationChange(e.target.value)}
           className="w-full rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors"
         >
-          <option value="">Selecione uma application</option>
+          <option value="">Selecione uma aplicação</option>
           {applications?.map((app) => (
             <option key={app.id} value={app.id}>
               {app.name}
@@ -125,7 +125,7 @@ export function Webhooks() {
 
       {applicationId === 0 ? (
         <div className="rounded-lg border border-border-subtle bg-bg-card p-10 text-center text-text-muted text-sm">
-          Selecione uma application para visualizar os webhooks.
+          Selecione uma aplicação para visualizar os webhooks.
         </div>
       ) : (
         <DataTable
@@ -145,9 +145,9 @@ export function Webhooks() {
           <Input
             {...registerCreate("agent_id", { valueAsNumber: true })}
             id="agent_id"
-            label="Agent ID"
+            label="Agente"
             type="number"
-            placeholder="ID do agent"
+            placeholder="ID do agente"
             error={createErrors.agent_id?.message}
           />
           <Input

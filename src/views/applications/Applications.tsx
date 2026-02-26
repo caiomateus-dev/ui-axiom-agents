@@ -25,6 +25,10 @@ export function Applications() {
     isSubmitting,
     handleDelete,
     isDeleting,
+    isAllOrgs,
+    organizations,
+    selectedOrgId,
+    setSelectedOrgId,
   } = useApplicationsPage();
 
   const columns: ColumnDef<ApplicationResponse>[] = [
@@ -78,10 +82,10 @@ export function Applications() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-text-main">Applications</h1>
+        <h1 className="text-2xl font-bold text-text-main">Aplicações</h1>
         <Button onClick={handleOpenCreate}>
           <Plus className="w-4 h-4" />
-          Nova Application
+          Nova Aplicação
         </Button>
       </div>
 
@@ -91,28 +95,47 @@ export function Applications() {
         rowKey={(row) => row.id}
         isLoading={isLoading}
         isError={isError}
-        errorMessage="Erro ao carregar applications. Tente novamente mais tarde."
-        emptyMessage='Nenhuma application encontrada. Crie a primeira clicando em "Nova Application".'
+        errorMessage="Erro ao carregar aplicações. Tente novamente mais tarde."
+        emptyMessage='Nenhuma aplicação encontrada. Crie a primeira clicando em "Nova Aplicação".'
       />
 
       <SlidePanel
         open={isModalOpen}
         onClose={handleCloseModal}
-        title={editingItem ? "Editar Application" : "Nova Application"}
+        title={editingItem ? "Editar Aplicação" : "Nova Aplicação"}
       >
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          {isAllOrgs && !editingItem && (
+            <div className="w-full">
+              <label className="block text-sm font-medium text-text-main mb-1">Organização</label>
+              <select
+                value={selectedOrgId ?? ""}
+                onChange={(e) => setSelectedOrgId(Number(e.target.value))}
+                className="w-full rounded-lg border border-border-strong bg-bg-card px-3 py-2 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors"
+              >
+                <option value="" disabled>
+                  Selecione uma organização
+                </option>
+                {organizations.map((org) => (
+                  <option key={org.id} value={org.id}>
+                    {org.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <Input
             {...register("name")}
             id="name"
             label="Nome"
-            placeholder="Nome da application"
+            placeholder="Nome da aplicação"
             error={errors.name?.message}
           />
           <Input
             {...register("description")}
             id="description"
             label="Descrição"
-            placeholder="Descrição da application"
+            placeholder="Descrição da aplicação"
             error={errors.description?.message}
           />
           <div className="flex justify-end gap-2 pt-4">

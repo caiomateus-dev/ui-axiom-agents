@@ -1,13 +1,4 @@
-import {
-  Activity,
-  AppWindow,
-  Bot,
-  CheckCircle,
-  Hash,
-  Key,
-  MessageSquare,
-  Zap,
-} from "lucide-react";
+import { Activity, AppWindow, Bot, CheckCircle, Hash, Key, MessageSquare, Zap } from "lucide-react";
 
 import {
   AgentPerformanceTable,
@@ -52,14 +43,14 @@ export function Dashboard() {
       {/* Row 1: Primary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <StatCard
-          title="Agents"
+          title="Agentes"
           value={agentCount}
           icon={Bot}
           isLoading={isAgentsLoading}
           subtitle={`${activeAgents} ativos`}
         />
         <StatCard
-          title="Applications"
+          title="Aplicações"
           value={appCount}
           icon={AppWindow}
           isLoading={isAppsLoading}
@@ -89,23 +80,27 @@ export function Dashboard() {
           subtitle={`${totalApiUsage.toLocaleString("pt-BR")} chamadas`}
         />
         <StatCard
-          title="Prompt Tokens"
+          title="Tokens de Prompt"
           value={totalPromptTokens}
           icon={MessageSquare}
           isLoading={isStatsLoading}
         />
         <StatCard
-          title="Completion Tokens"
+          title="Tokens de Conclusão"
           value={totalCompletionTokens}
           icon={Zap}
           isLoading={isStatsLoading}
         />
         <StatCard
-          title="Agents Ativos"
+          title="Agentes Ativos"
           value={activeAgents}
           icon={CheckCircle}
           isLoading={isAgentsLoading}
-          subtitle={agentCount > 0 ? `${Math.round((activeAgents / agentCount) * 100)}% do total` : undefined}
+          subtitle={
+            agentCount > 0
+              ? `${Math.round((activeAgents / agentCount) * 100)}% do total`
+              : undefined
+          }
         />
       </div>
 

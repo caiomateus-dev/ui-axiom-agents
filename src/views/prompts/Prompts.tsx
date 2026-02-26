@@ -37,7 +37,7 @@ export function Prompts() {
   const columns: ColumnDef<PromptResponse>[] = [
     {
       id: "agent",
-      header: "Agent",
+      header: "Agente",
       accessor: (row) => <span className="font-medium text-text-main">{row.agent_name}</span>,
     },
     {
@@ -113,9 +113,9 @@ export function Prompts() {
           <Input
             {...registerCreate("agent_id", { valueAsNumber: true })}
             id="agent_id"
-            label="Agent ID"
+            label="Agente"
             type="number"
-            placeholder="ID do agent"
+            placeholder="ID do agente"
             error={createErrors.agent_id?.message}
           />
           <div className="w-full">
@@ -195,7 +195,7 @@ export function Prompts() {
       >
         <div className="flex flex-col gap-4">
           <p className="text-sm text-text-muted">
-            Tem certeza que deseja excluir o prompt do agent{" "}
+            Tem certeza que deseja excluir o prompt do agente{" "}
             <span className="font-medium text-text-main">{deletingPrompt?.agent_name}</span>? Essa
             ação não pode ser desfeita.
           </p>

@@ -32,7 +32,7 @@ describe("useCreateApplication", () => {
       wrapper: createQueryWrapper(),
     });
 
-    await result.current.mutateAsync({ name: "New App", description: "Test" });
+    await result.current.mutateAsync({ data: { name: "New App", description: "Test" } });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });

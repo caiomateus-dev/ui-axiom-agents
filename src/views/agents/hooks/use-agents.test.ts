@@ -47,8 +47,7 @@ describe("useCreateAgent", () => {
     });
 
     await result.current.mutateAsync({
-      name: "New Agent",
-      description: "Test",
+      data: { name: "New Agent", description: "Test" },
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -65,6 +64,6 @@ describe("useCreateAgent", () => {
       wrapper: createQueryWrapper(),
     });
 
-    await expect(result.current.mutateAsync({ name: "Fail" })).rejects.toThrow();
+    await expect(result.current.mutateAsync({ data: { name: "Fail" } })).rejects.toThrow();
   });
 });

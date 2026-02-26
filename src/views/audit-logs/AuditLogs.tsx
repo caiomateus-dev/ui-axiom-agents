@@ -17,7 +17,7 @@ export function AuditLogs() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-text-main mb-6">Audit Logs</h1>
+      <h1 className="text-2xl font-bold text-text-main mb-6">Registros de Auditoria</h1>
 
       <AuditStats stats={stats} isLoading={isLoadingStats} />
 

@@ -67,7 +67,7 @@ export function Chat() {
             <p className="text-sm text-text-muted">
               {agentId
                 ? "Envie uma mensagem para começar a conversa."
-                : "Selecione um agent para começar."}
+                : "Selecione um agente para começar."}
             </p>
           </div>
         )}

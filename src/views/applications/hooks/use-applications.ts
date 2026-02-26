@@ -13,7 +13,13 @@ export function useApplications() {
 export function useCreateApplication() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createApplication,
+    mutationFn: ({
+      data,
+      organizationId,
+    }: {
+      data: ApplicationFormData;
+      organizationId?: number;
+    }) => createApplication(data, organizationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["applications"] });
     },

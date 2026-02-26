@@ -39,7 +39,7 @@ export function VectorStores() {
   const columns: ColumnDef<VectorStoreResponse>[] = [
     {
       id: "agent",
-      header: "Agent",
+      header: "Agente",
       accessor: (row) => <span className="font-medium text-text-main">{row.agent_name}</span>,
     },
     {
@@ -92,10 +92,10 @@ export function VectorStores() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-text-main">Vector Stores</h1>
+        <h1 className="text-2xl font-bold text-text-main">Base de Conhecimento</h1>
         <Button onClick={handleOpenCreate}>
           <Plus className="w-4 h-4" />
-          Novo Vector Store
+          Nova Base
         </Button>
       </div>
 
@@ -105,15 +105,15 @@ export function VectorStores() {
         rowKey={(row) => row.id}
         isLoading={isLoading}
         isError={isError}
-        errorMessage="Erro ao carregar vector stores. Tente novamente mais tarde."
-        emptyMessage='Nenhum vector store encontrado. Crie o primeiro clicando em "Novo Vector Store".'
+        errorMessage="Erro ao carregar bases de conhecimento. Tente novamente mais tarde."
+        emptyMessage='Nenhuma base de conhecimento encontrada. Crie a primeira clicando em "Nova Base".'
       />
 
       {/* Create Panel */}
       <SlidePanel
         open={isCreateOpen}
         onClose={handleCloseCreate}
-        title="Novo Vector Store"
+        title="Nova Base de Conhecimento"
         size="lg"
       >
         <form onSubmit={onCreateSubmit} className="flex flex-col gap-4">
@@ -182,7 +182,7 @@ export function VectorStores() {
       <SlidePanel
         open={!!editingStore}
         onClose={handleCloseEdit}
-        title="Editar Vector Store"
+        title="Editar Base de Conhecimento"
         size="lg"
       >
         <form onSubmit={onEditSubmit} className="flex flex-col gap-4">
@@ -250,7 +250,7 @@ export function VectorStores() {
       >
         <div className="flex flex-col gap-4">
           <p className="text-sm text-text-muted">
-            Tem certeza que deseja excluir o vector store do agent{" "}
+            Tem certeza que deseja excluir a base de conhecimento do agente{" "}
             <span className="font-medium text-text-main">{deletingStore?.agent_name}</span>? Essa
             ação não pode ser desfeita.
           </p>
