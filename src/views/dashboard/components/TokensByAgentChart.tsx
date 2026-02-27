@@ -1,12 +1,4 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import type { AgentTokenStats } from "@/views/audit-logs/dtos/response/audit.response";
 
@@ -63,8 +55,15 @@ export function TokensByAgentChart({ data, isLoading }: TokensByAgentChartProps)
               fontSize: "12px",
             }}
             labelStyle={{ color: "var(--color-text-main)" }}
+            itemStyle={{ color: "var(--color-text-muted)" }}
+            cursor={{ fill: "var(--color-border-subtle)", opacity: 0.5 }}
           />
-          <Bar dataKey="total_tokens" name="Tokens" fill="var(--color-chart-1)" radius={[4, 4, 0, 0]} />
+          <Bar
+            dataKey="total_tokens"
+            name="Tokens"
+            fill="var(--color-chart-1)"
+            radius={[4, 4, 0, 0]}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

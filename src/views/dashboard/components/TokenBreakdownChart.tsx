@@ -62,10 +62,10 @@ export function TokenBreakdownChart({ data, isLoading }: TokenBreakdownChartProp
               fontSize: "12px",
             }}
             labelStyle={{ color: "var(--color-text-main)" }}
+            itemStyle={{ color: "var(--color-text-muted)" }}
+            cursor={{ fill: "var(--color-border-subtle)", opacity: 0.5 }}
           />
-          <Legend
-            wrapperStyle={{ fontSize: "12px" }}
-          />
+          <Legend wrapperStyle={{ fontSize: "12px" }} />
           <Bar
             dataKey="prompt_tokens"
             name="Prompt"

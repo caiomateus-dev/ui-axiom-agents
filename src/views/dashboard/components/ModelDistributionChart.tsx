@@ -67,6 +67,8 @@ export function ModelDistributionChart({ data, isLoading }: ModelDistributionCha
                 borderRadius: "8px",
                 fontSize: "12px",
               }}
+              labelStyle={{ color: "var(--color-text-main)" }}
+              itemStyle={{ color: "var(--color-text-muted)" }}
             />
           </PieChart>
         </ResponsiveContainer>

@@ -1,25 +1,37 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import { ArrowLeft, MessageCircle, RotateCcw, Settings } from "lucide-react";
+import { ArrowLeft, MessageCircle, RotateCcw, Settings, Wrench, X } from "lucide-react";
 
 import { Badge, Button, Spinner } from "@/components";
 
-
 import { ChatBubble, ChatInput } from "@/views/chat/components";
 import { useChatPage } from "@/views/chat/hooks";
+import {
+  useAgentTools,
+  useAssignTool,
+  useRemoveTool,
+  useTools,
+} from "@/views/tools/hooks/use-tools";
 
 import { formatDateTime } from "@/utils";
 
 import { useAgent } from "./hooks/use-agents";
 
-type Tab = "detalhes" | "testar";
+type Tab = "detalhes" | "ferramentas" | "testar";
 
 export function AgentDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>("detalhes");
   const { data: agent, isLoading, isError } = useAgent(Number(id));
+  const agentId = Number(id);
+  const { data: agentTools = [], isLoading: isToolsLoading } = useAgentTools(agentId);
+  const { data: allTools = [] } = useTools();
+  const assignTool = useAssignTool(agentId);
+  const removeTool = useRemoveTool(agentId);
+
+  const assignedToolIds = new Set(agentTools.map((at) => at.tool.id));
 
   const {
     sessionId,
@@ -84,6 +96,22 @@ export function AgentDetail() {
             Detalhes
           </button>
           <button
+            onClick={() => setTab("ferramentas")}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              tab === "ferramentas"
+                ? "border-brand-500 text-brand-500"
+                : "border-transparent text-text-muted hover:text-text-main"
+            }`}
+          >
+            <Wrench className="w-4 h-4" />
+            Ferramentas
+            {agentTools.length > 0 && (
+              <span className="ml-1 text-xs bg-brand-50 text-brand-500 rounded-full px-1.5 py-0.5">
+                {agentTools.length}
+              </span>
+            )}
+          </button>
+          <button
             onClick={() => setTab("testar")}
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               tab === "testar"
@@ -117,6 +145,84 @@ export function AgentDetail() {
                 <p className="text-sm text-text-main">{formatDateTime(agent.updated_at)}</p>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Ferramentas */}
+      {tab === "ferramentas" && (
+        <div className="p-6 overflow-y-auto space-y-6">
+          {/* Ferramentas atribuídas */}
+          <div className="rounded-lg border border-border-subtle bg-bg-card p-5">
+            <h3 className="text-sm font-medium text-text-main mb-4">Ferramentas ativas</h3>
+            {isToolsLoading ? (
+              <div className="flex items-center gap-2 text-sm text-text-muted">
+                <Spinner size="sm" /> Carregando...
+              </div>
+            ) : agentTools.length === 0 ? (
+              <p className="text-sm text-text-muted">Nenhuma ferramenta atribuída.</p>
+            ) : (
+              <ul className="space-y-2">
+                {agentTools.map((at) => (
+                  <li
+                    key={at.tool.id}
+                    className="flex items-center justify-between rounded-md border border-border-subtle bg-bg-surface px-4 py-3"
+                  >
+                    <div>
+                      <p className="text-sm font-medium text-text-main">{at.tool.name}</p>
+                      {at.tool.description && (
+                        <p className="text-xs text-text-muted mt-0.5">{at.tool.description}</p>
+                      )}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeTool.mutate(at.tool.id)}
+                      loading={removeTool.isPending}
+                    >
+                      <X className="w-4 h-4" />
+                      Remover
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Ferramentas disponíveis para adicionar */}
+          <div className="rounded-lg border border-border-subtle bg-bg-card p-5">
+            <h3 className="text-sm font-medium text-text-main mb-4">Adicionar ferramenta</h3>
+            {allTools.filter((t) => t.is_active && !assignedToolIds.has(t.id)).length === 0 ? (
+              <p className="text-sm text-text-muted">
+                Todas as ferramentas ativas já estão atribuídas.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {allTools
+                  .filter((t) => t.is_active && !assignedToolIds.has(t.id))
+                  .map((tool) => (
+                    <li
+                      key={tool.id}
+                      className="flex items-center justify-between rounded-md border border-border-subtle bg-bg-surface px-4 py-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-text-main">{tool.name}</p>
+                        {tool.description && (
+                          <p className="text-xs text-text-muted mt-0.5">{tool.description}</p>
+                        )}
+                      </div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => assignTool.mutate(tool.id)}
+                        loading={assignTool.isPending}
+                      >
+                        Adicionar
+                      </Button>
+                    </li>
+                  ))}
+              </ul>
+            )}
           </div>
         </div>
       )}
