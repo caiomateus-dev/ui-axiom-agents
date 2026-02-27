@@ -82,7 +82,7 @@ export function Autocomplete({
       <div className="relative">
         <div
           onClick={handleOpen}
-          className={`flex items-center w-full rounded-lg border bg-bg-card px-3 py-2 text-sm transition-colors cursor-pointer focus-within:outline-none focus-within:ring-2 ${borderClass} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`flex items-center w-full h-9 rounded-lg border bg-bg-surface px-3 text-sm transition-colors cursor-pointer focus-within:outline-none focus-within:ring-2 ${borderClass} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {open ? (
             <input

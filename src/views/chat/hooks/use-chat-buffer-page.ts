@@ -154,6 +154,8 @@ export function useChatBufferPage() {
 
     setMessages((prev) => [...prev, userMsg]);
     setIsSending(true);
+    // Snapshot assistant count BEFORE sending — polling para quando o count aumentar
+    lastAssistantCountRef.current = messages.filter((m) => m.role === "assistant").length;
 
     try {
       const data = await sendMessageBuffer({
