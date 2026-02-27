@@ -1,15 +1,24 @@
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Zap } from "lucide-react";
 
-import { Autocomplete, Button, Input, Spinner } from "@/components";
+import { Autocomplete, Button, Spinner } from "@/components";
 
 import { ChatBubble, ChatInput } from "./components";
 import { useChatPage } from "./hooks";
 
+const selectCls =
+  "h-9 rounded-lg border border-border-strong bg-bg-surface px-3 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors disabled:opacity-40";
+
 export function Chat() {
   const {
+    applicationId,
+    setApplicationId,
+    applications,
+    apiKeyId,
+    setApiKeyId,
+    apiKeys,
+    selectedApiKey,
     agentId,
     setAgentId,
-    handleAgentIdInput,
     agentOptions,
     isAgentsLoading,
     sessionId,
@@ -22,31 +31,71 @@ export function Chat() {
     isResetting,
   } = useChatPage();
 
+  const canSend = !!agentId && !!selectedApiKey && !isSending;
+
   return (
     <div className="h-[calc(100vh-(--spacing(12)))] flex flex-col">
       {/* Top Bar */}
-      <div className="flex items-center gap-4 px-4 py-3 border-b border-border-subtle bg-bg-card">
-        <div className="w-24">
-          <Input
-            id="agent_id_input"
-            type="number"
-            value={agentId ?? ""}
-            onChange={(e) => handleAgentIdInput(e.target.value)}
-            placeholder="ID"
-          />
+      <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-border-subtle bg-bg-card">
+        {/* Application */}
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-text-muted">Aplicação</label>
+          <select
+            value={applicationId ?? ""}
+            onChange={(e) => setApplicationId(Number(e.target.value) || null)}
+            className={selectCls}
+          >
+            <option value="" disabled>
+              Selecione...
+            </option>
+            {applications?.map((app) => (
+              <option key={app.id} value={app.id}>
+                {app.name}
+              </option>
+            ))}
+          </select>
         </div>
-        <div className="w-64">
+
+        {/* API Key */}
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-text-muted">API Key</label>
+          <select
+            value={apiKeyId ?? ""}
+            onChange={(e) => setApiKeyId(Number(e.target.value) || null)}
+            disabled={!applicationId || !apiKeys?.length}
+            className={selectCls}
+          >
+            {!apiKeys?.length ? (
+              <option value="">Nenhuma key</option>
+            ) : (
+              apiKeys.map((k) => (
+                <option key={k.id} value={k.id}>
+                  {k.name}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
+
+        {/* Agent */}
+        <div className="flex flex-col gap-1 w-56">
+          <label className="text-xs text-text-muted">Agente</label>
           <Autocomplete
             id="agent_id"
             options={agentOptions}
             value={agentId}
             onChange={setAgentId}
-            placeholder="Buscar por nome..."
+            placeholder="Buscar agente..."
             isLoading={isAgentsLoading}
           />
         </div>
-        {sessionId && <span className="text-xs text-text-muted truncate">Sessão: {sessionId}</span>}
-        <div className="ml-auto">
+
+        <div className="ml-auto flex items-center gap-3">
+          {sessionId && (
+            <span className="text-xs text-text-muted truncate max-w-[200px]">
+              Sessão: {sessionId}
+            </span>
+          )}
           <Button
             variant="ghost"
             size="sm"
@@ -60,14 +109,22 @@ export function Chat() {
         </div>
       </div>
 
+      {/* Config warning */}
+      {!selectedApiKey && (
+        <div className="mx-4 mt-3 flex items-center gap-2 rounded-lg border border-warning-border bg-warning-bg px-3 py-2 text-xs text-warning-text">
+          <Zap className="w-4 h-4 shrink-0" />
+          Selecione uma aplicação com API Key ativa para enviar mensagens.
+        </div>
+      )}
+
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
         {messages.length === 0 && !isSending && (
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-sm text-text-muted">
-              {agentId
-                ? "Envie uma mensagem para começar a conversa."
-                : "Selecione um agente para começar."}
+            <p className="text-sm text-text-muted text-center max-w-sm">
+              {!agentId || !selectedApiKey
+                ? "Configure a aplicação, API Key e o agente para começar."
+                : "Envie uma mensagem para começar a conversa."}
             </p>
           </div>
         )}
@@ -103,7 +160,7 @@ export function Chat() {
       </div>
 
       {/* Chat Input */}
-      <ChatInput onSend={handleSend} disabled={!agentId || isSending} />
+      <ChatInput onSend={handleSend} disabled={!canSend} />
     </div>
   );
 }

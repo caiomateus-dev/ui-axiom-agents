@@ -1,9 +1,10 @@
-import { api } from "@/core";
+import axios from "axios";
 
 import type { ChatResponse } from "../dtos/response/chat.response";
 
 export interface SendMessagePayload {
   agentId: number;
+  apiKey: string;
   text?: string;
   sessionId?: string;
   image?: File;
@@ -12,6 +13,7 @@ export interface SendMessagePayload {
 }
 
 export async function sendMessage(payload: SendMessagePayload): Promise<ChatResponse> {
+  const baseURL = (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:3000";
   const formData = new FormData();
   formData.append("agent_id", String(payload.agentId));
   if (payload.text) formData.append("text", payload.text);
@@ -22,6 +24,8 @@ export async function sendMessage(payload: SendMessagePayload): Promise<ChatResp
     formData.append("audio", payload.audio, `recording.${ext}`);
   }
   if (payload.file) formData.append("file", payload.file, payload.file.name);
-  const response = await api.post<ChatResponse>("/agents/chat", formData);
+  const response = await axios.post<ChatResponse>(`${baseURL}/agents/chat`, formData, {
+    headers: { "X-API-Key": payload.apiKey },
+  });
   return response.data;
 }

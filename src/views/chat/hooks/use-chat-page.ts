@@ -5,6 +5,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AutocompleteOption } from "@/components";
 
 import { listAgents } from "@/views/agents/api/list-agents";
+import { useApiKeys } from "@/views/api-keys/hooks/use-api-keys";
+import { useApplications } from "@/views/applications/hooks/use-applications";
 
 import { getChatHistory } from "../api/get-history";
 import { resetChatSession } from "../api/reset-session";
@@ -30,21 +32,31 @@ interface UseChatPageOptions {
 
 export function useChatPage(options?: UseChatPageOptions) {
   const [agentId, setAgentId] = useState<number | null>(options?.fixedAgentId ?? null);
+  const [applicationId, setApplicationId] = useState<number | null>(null);
+  const [apiKeyId, setApiKeyId] = useState<number | null>(null);
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const agents = useQuery({ queryKey: ["agents"], queryFn: listAgents });
+  const { data: applications } = useApplications();
+  const { data: apiKeys } = useApiKeys(applicationId ?? undefined);
 
   const agentOptions: AutocompleteOption[] = useMemo(
     () => (agents.data ?? []).map((a) => ({ value: a.id, label: a.name })),
     [agents.data],
   );
 
+  const selectedApiKey = useMemo(() => {
+    const id = apiKeyId ?? apiKeys?.[0]?.id;
+    return apiKeys?.find((k) => k.id === id)?.key ?? null;
+  }, [apiKeys, apiKeyId]);
+
   const sendMutation = useMutation({
     mutationFn: (payload: ChatInputPayload) =>
       sendMessage({
         agentId: agentId!,
+        apiKey: selectedApiKey!,
         text: payload.text,
         sessionId,
         image: payload.image,
@@ -104,8 +116,8 @@ export function useChatPage(options?: UseChatPageOptions) {
 
   const resetMutation = useMutation({
     mutationFn: () => {
-      if (!sessionId || !agentId) return Promise.resolve();
-      return resetChatSession(sessionId, agentId);
+      if (!sessionId || !agentId || !selectedApiKey) return Promise.resolve();
+      return resetChatSession(sessionId, agentId, selectedApiKey);
     },
     onSuccess: () => {
       setSessionId(undefined);
@@ -140,8 +152,9 @@ export function useChatPage(options?: UseChatPageOptions) {
   }
 
   async function loadHistory(sid: string) {
+    if (!selectedApiKey) return;
     try {
-      const data = await getChatHistory(sid);
+      const data = await getChatHistory(sid, selectedApiKey);
       setSessionId(sid);
       setMessages(
         data.messages.map((m) => ({
@@ -156,11 +169,21 @@ export function useChatPage(options?: UseChatPageOptions) {
   }
 
   return {
+    // Application / key selection
+    applicationId,
+    setApplicationId,
+    applications,
+    apiKeyId,
+    setApiKeyId,
+    apiKeys,
+    selectedApiKey,
+    // Agent selection
     agentId,
     setAgentId,
     handleAgentIdInput,
     agentOptions,
     isAgentsLoading: agents.isLoading,
+    // Chat state
     sessionId,
     messages,
     messagesEndRef,
