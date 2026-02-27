@@ -50,7 +50,7 @@ export function ChatBubble({
         className={`max-w-[75%] ${
           isUser
             ? "bg-brand-500 text-white rounded-2xl rounded-br-sm ml-auto"
-            : "bg-bg-card border border-border-subtle rounded-2xl rounded-bl-sm mr-auto"
+            : "bg-bg-surface text-text-main border border-border-subtle rounded-2xl rounded-bl-sm mr-auto"
         }`}
       >
         {/* Outgoing attachments preview (user sent) */}

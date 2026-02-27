@@ -5,6 +5,9 @@ import { Autocomplete, Button, Spinner } from "@/components";
 import { ChatBubble, ChatInput } from "./components";
 import { useChatBufferPage } from "./hooks";
 
+const selectCls =
+  "h-9 rounded-lg border border-border-strong bg-bg-surface px-3 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors disabled:opacity-40";
+
 export function ChatBuffer() {
   const {
     applicationId,
@@ -35,12 +38,12 @@ export function ChatBuffer() {
       {/* Top Bar */}
       <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-border-subtle bg-bg-card">
         {/* Application */}
-        <div>
-          <label className="block text-xs text-text-muted mb-1">Aplicação</label>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-text-muted">Aplicação</label>
           <select
             value={applicationId ?? ""}
             onChange={(e) => setApplicationId(Number(e.target.value) || null)}
-            className="rounded-lg border border-border-strong bg-bg-surface px-3 py-1.5 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors"
+            className={selectCls}
           >
             <option value="" disabled>
               Selecione...
@@ -54,13 +57,13 @@ export function ChatBuffer() {
         </div>
 
         {/* API Key */}
-        <div>
-          <label className="block text-xs text-text-muted mb-1">API Key</label>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-text-muted">API Key</label>
           <select
             value={apiKeyId ?? ""}
             onChange={(e) => setApiKeyId(Number(e.target.value) || null)}
             disabled={!applicationId || !apiKeys?.length}
-            className="rounded-lg border border-border-strong bg-bg-surface px-3 py-1.5 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors disabled:opacity-40"
+            className={selectCls}
           >
             {!apiKeys?.length ? (
               <option value="">Nenhuma key</option>
@@ -75,8 +78,8 @@ export function ChatBuffer() {
         </div>
 
         {/* Agent */}
-        <div className="w-56">
-          <label className="block text-xs text-text-muted mb-1">Agente</label>
+        <div className="flex flex-col gap-1 w-56">
+          <label className="text-xs text-text-muted">Agente</label>
           <Autocomplete
             id="buffer_agent_id"
             options={agentOptions}
@@ -143,9 +146,9 @@ export function ChatBuffer() {
         {/* Polling / waiting indicator after user message */}
         {isPolling && (
           <div className="flex justify-start">
-            <div className="bg-bg-card border border-border-subtle rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-2">
+            <div className="bg-bg-surface border border-border-subtle rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-2 text-text-muted">
               <Spinner size="sm" />
-              <span className="text-xs text-text-muted">Processando mensagem...</span>
+              <span className="text-xs">Processando mensagem...</span>
             </div>
           </div>
         )}
