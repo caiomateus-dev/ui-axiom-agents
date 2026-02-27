@@ -54,7 +54,7 @@ export function useApiKeysPage() {
 
   function handleOpenEdit(apiKey: ApiKeyResponse) {
     resetEdit({
-      application_id: apiKey.application_id,
+      application_id: apiKey.application,
       name: apiKey.name,
     });
     setEditingKey(apiKey);

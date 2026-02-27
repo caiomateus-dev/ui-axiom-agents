@@ -107,7 +107,7 @@ export const handlers = [
     return HttpResponse.json([
       {
         id: 1,
-        application_id: 1,
+        application: 1,
         application_name: "App 1",
         name: "Key 1",
         key: "sk-abc1234567890xyz",
@@ -115,7 +115,6 @@ export const handlers = [
         expires_at: null,
         last_used_at: null,
         usage_count: 0,
-        metadata: {},
         created_at: "2024-01-01T00:00:00Z",
         updated_at: "2024-01-01T00:00:00Z",
       },
@@ -141,7 +140,7 @@ export const handlers = [
     const body = (await request.json()) as Record<string, unknown>;
     return HttpResponse.json({
       id: Number(params.id),
-      application_id: 1,
+      application: 1,
       application_name: "App 1",
       ...body,
       key: "sk-abc1234567890xyz",
@@ -149,7 +148,6 @@ export const handlers = [
       expires_at: null,
       last_used_at: null,
       usage_count: 0,
-      metadata: {},
       created_at: "2024-01-01T00:00:00Z",
       updated_at: "2024-01-03T00:00:00Z",
     });
