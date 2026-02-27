@@ -18,6 +18,7 @@ import {
   Users,
   Webhook,
   Wrench,
+  Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -68,7 +69,10 @@ export function Sidebar() {
     },
     {
       label: "Comunicação",
-      items: [{ to: "/chat", icon: MessageCircle, label: "Chat" }],
+      items: [
+        { to: "/chat", icon: MessageCircle, label: "Chat" },
+        { to: "/chat-buffer", icon: Zap, label: "Testar Integração" },
+      ],
     },
     ...(isOrgAdmin || isSuperuser
       ? [

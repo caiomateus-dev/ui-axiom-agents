@@ -6,7 +6,7 @@ import { AgentDetail, Agents } from "@/views/agents";
 import { ApiKeys } from "@/views/api-keys";
 import { Applications } from "@/views/applications";
 import { AuditLogs } from "@/views/audit-logs";
-import { Chat } from "@/views/chat";
+import { Chat, ChatBuffer } from "@/views/chat";
 import { Dashboard } from "@/views/dashboard";
 import { ForgotPassword } from "@/views/forgot-password";
 import { Login } from "@/views/login";
@@ -47,6 +47,7 @@ export const router = createBrowserRouter([
       { path: "webhooks", element: <Webhooks /> },
       { path: "mcp-servers", element: <McpServers /> },
       { path: "chat", element: <Chat /> },
+      { path: "chat-buffer", element: <ChatBuffer /> },
       { path: "audit-logs", element: <AuditLogs /> },
       { path: "users", element: <Users /> },
       { path: "organizations", element: <Organizations /> },

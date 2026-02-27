@@ -73,7 +73,16 @@ export function Chat() {
         )}
 
         {messages.map((msg, idx) => (
-          <ChatBubble key={idx} role={msg.role} content={msg.content} timestamp={msg.created_at} />
+          <ChatBubble
+            key={idx}
+            role={msg.role}
+            content={msg.content}
+            timestamp={msg.created_at}
+            attachments={msg.attachments}
+            responseImages={msg.responseImages}
+            responseAudios={msg.responseAudios}
+            responseDocuments={msg.responseDocuments}
+          />
         ))}
 
         {isSending && (

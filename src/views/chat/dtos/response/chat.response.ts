@@ -1,3 +1,10 @@
+export interface AttachmentResponse {
+  b64: string;
+  url?: string;
+  contentType: string;
+  filename?: string;
+}
+
 export interface ChatMessageResponse {
   role: string;
   content: string;
@@ -10,6 +17,11 @@ export interface ChatResponse {
   agent_id: number;
   agent_name: string;
   tokens_used: number;
+  needs_human_handoff?: boolean;
+  handoff_reason?: string;
+  images?: AttachmentResponse[];
+  documents?: AttachmentResponse[];
+  audios?: AttachmentResponse[];
 }
 
 export interface ChatSessionResponse {

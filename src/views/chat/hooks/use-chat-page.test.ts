@@ -44,7 +44,7 @@ describe("useChatPage", () => {
       wrapper: createQueryWrapper(),
     });
 
-    act(() => result.current.handleSend("hello"));
+    act(() => result.current.handleSend({ text: "hello" }));
     expect(result.current.messages).toEqual([]);
   });
 
@@ -66,7 +66,7 @@ describe("useChatPage", () => {
     });
 
     act(() => result.current.setAgentId(1));
-    act(() => result.current.handleSend("Hello"));
+    act(() => result.current.handleSend({ text: "Hello" }));
 
     expect(result.current.messages).toHaveLength(1);
     expect(result.current.messages[0].role).toBe("user");
@@ -101,7 +101,7 @@ describe("useChatPage", () => {
     });
 
     act(() => result.current.setAgentId(1));
-    act(() => result.current.handleSend("Hello"));
+    act(() => result.current.handleSend({ text: "Hello" }));
 
     await waitFor(() => {
       expect(result.current.sessionId).toBe("session-123");
