@@ -1,12 +1,40 @@
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+
+import { Check, Copy, Pencil, Plus, Trash2 } from "lucide-react";
 
 import { Badge, Button, Input, Modal, SlidePanel, DataTable, Tooltip } from "@/components";
 import type { ColumnDef } from "@/components/ui/DataTable";
 
-import { formatDate, maskKey } from "@/utils";
+import { formatDate } from "@/utils";
 
 import type { ApiKeyResponse } from "./dtos/response/api-key.response";
 import { useApiKeysPage } from "./hooks";
+
+function ApiKeyCopyCell({ apiKey }: { apiKey: string }) {
+  const [copied, setCopied] = useState(false);
+
+  function handleCopy() {
+    navigator.clipboard.writeText(apiKey).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  const masked = apiKey.length > 8 ? apiKey.slice(0, 4) + "..." + apiKey.slice(-4) : apiKey;
+
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="font-mono text-xs text-text-muted">{masked}</span>
+      <button
+        onClick={handleCopy}
+        title="Copiar chave"
+        className="p-1 rounded text-text-muted hover:text-text-main hover:bg-brand-50 transition-colors cursor-pointer"
+      >
+        {copied ? <Check className="w-3 h-3 text-success-text" /> : <Copy className="w-3 h-3" />}
+      </button>
+    </div>
+  );
+}
 
 export function ApiKeys() {
   const {
@@ -48,9 +76,7 @@ export function ApiKeys() {
     {
       id: "key",
       header: "Chave",
-      accessor: (row) => (
-        <span className="font-mono text-xs text-text-muted">{maskKey(row.key)}</span>
-      ),
+      accessor: (row) => <ApiKeyCopyCell apiKey={row.key} />,
     },
     {
       id: "status",
