@@ -170,6 +170,7 @@ export function useChatBufferPage() {
 
       setSessionId(data.session_id);
       startPolling(data.session_id);
+      setIsSending(false);
     } catch (err) {
       console.error("[ChatBuffer] sendMessageBuffer error:", err);
       let msg = err instanceof Error ? err.message : String(err);
