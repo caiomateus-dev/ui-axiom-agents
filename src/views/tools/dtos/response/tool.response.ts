@@ -8,9 +8,7 @@ export interface ToolResponse {
 }
 
 export interface AgentToolResponse {
-  id: number;
-  agent_id: number;
-  tool_id: number;
   tool: ToolResponse;
-  created_at: string;
+  order_index: number;
+  is_active: boolean;
 }

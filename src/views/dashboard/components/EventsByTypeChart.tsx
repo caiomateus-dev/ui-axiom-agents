@@ -66,6 +66,8 @@ export function EventsByTypeChart({ data, isLoading }: EventsByTypeChartProps) {
                 borderRadius: "8px",
                 fontSize: "12px",
               }}
+              labelStyle={{ color: "var(--color-text-main)" }}
+              itemStyle={{ color: "var(--color-text-muted)" }}
             />
           </PieChart>
         </ResponsiveContainer>
