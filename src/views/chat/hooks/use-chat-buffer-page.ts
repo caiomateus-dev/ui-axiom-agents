@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import { listAgents } from "@/views/agents/api/list-agents";
 import { useApiKeys } from "@/views/api-keys/hooks/use-api-keys";
 import { useApplications } from "@/views/applications/hooks/use-applications";
 
-import { getChatHistory } from "../api/get-history";
 import { sendMessageBuffer } from "../api/send-message-buffer";
 import type { MessageAttachment } from "../components/ChatBubble";
 import type { ChatInputPayload } from "../components/ChatInput";
@@ -29,6 +29,7 @@ export function useChatBufferPage() {
   const [applicationId, setApplicationId] = useState<number | null>(null);
   const [agentId, setAgentId] = useState<number | null>(null);
   const [apiKeyId, setApiKeyId] = useState<number | null>(null);
+  const apiKeyRef = useRef<string | null>(null);
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const [messages, setMessages] = useState<BufferMessage[]>([]);
   const [isSending, setIsSending] = useState(false);
@@ -63,6 +64,10 @@ export function useChatBufferPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    apiKeyRef.current = selectedApiKey;
+  }, [selectedApiKey]);
+
   function stopPolling() {
     if (pollTimerRef.current) {
       clearInterval(pollTimerRef.current);
@@ -77,7 +82,15 @@ export function useChatBufferPage() {
       return;
     }
     try {
-      const data = await getChatHistory(sid);
+      const baseURL =
+        (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:3000";
+      const resp = await axios.get(`${baseURL}/agents/chat/history`, {
+        params: { session_id: sid },
+        headers: { "X-API-Key": apiKeyRef.current ?? "" },
+      });
+      const data = resp.data as {
+        messages: { role: string; content: string; created_at: string }[];
+      };
       const assistantMsgs = data.messages.filter((m) => m.role === "assistant");
       // We got a new assistant message since we started polling
       if (assistantMsgs.length > lastAssistantCountRef.current) {
@@ -155,9 +168,24 @@ export function useChatBufferPage() {
 
       setSessionId(data.session_id);
       startPolling(data.session_id);
-    } catch {
+    } catch (err) {
+      console.error("[ChatBuffer] sendMessageBuffer error:", err);
+      let msg = err instanceof Error ? err.message : String(err);
+      // Extract backend error message from axios response
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosErr = err as {
+          response?: { data?: { message?: string; error?: string }; status?: number };
+        };
+        const backendMsg = axiosErr.response?.data?.message ?? axiosErr.response?.data?.error;
+        if (backendMsg) msg = backendMsg;
+        console.error(
+          "[ChatBuffer] backend response:",
+          axiosErr.response?.status,
+          axiosErr.response?.data,
+        );
+      }
       setIsSending(false);
-      setSendError("Erro ao enviar mensagem para o buffer. Verifique a API Key e tente novamente.");
+      setSendError(`Erro: ${msg}`);
     }
   }
 
