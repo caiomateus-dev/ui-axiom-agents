@@ -7,6 +7,8 @@ export function useApplications() {
   return useQuery({
     queryKey: ["applications"],
     queryFn: listApplications,
+    staleTime: 0,
+    refetchOnMount: "always",
   });
 }
 

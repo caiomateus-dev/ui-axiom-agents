@@ -15,7 +15,11 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.dark select {
+.dark select,
+.dark input[type="time"],
+.dark input[type="date"],
+.dark input[type="checkbox"],
+.dark input[type="radio"] {
   color-scheme: dark;
 }
 

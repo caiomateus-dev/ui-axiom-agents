@@ -99,9 +99,7 @@ export function ChatBuffer() {
             </span>
           )}
           {sessionId && !isPolling && (
-            <span className="text-xs text-text-muted truncate max-w-[200px]">
-              Sessão: {sessionId}
-            </span>
+            <span className="text-xs text-text-muted truncate max-w-50">Sessão: {sessionId}</span>
           )}
           <Button variant="ghost" size="sm" onClick={handleReset} disabled={messages.length === 0}>
             <RotateCcw className="w-4 h-4" />

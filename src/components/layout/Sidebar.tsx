@@ -7,6 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Database,
+  Hash,
+  Headphones,
   Key,
   LayoutDashboard,
   LogOut,
@@ -70,8 +72,10 @@ export function Sidebar() {
     {
       label: "Comunicação",
       items: [
+        { to: "/channels", icon: Hash, label: "Canais" },
         { to: "/chat", icon: MessageCircle, label: "Chat" },
         { to: "/chat-buffer", icon: Zap, label: "Testar Integração" },
+        { to: "/human-handoff", icon: Headphones, label: "Atendimento Humano" },
       ],
     },
     ...(isOrgAdmin || isSuperuser

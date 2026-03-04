@@ -6,9 +6,11 @@ import { AgentDetail, Agents } from "@/views/agents";
 import { ApiKeys } from "@/views/api-keys";
 import { Applications } from "@/views/applications";
 import { AuditLogs } from "@/views/audit-logs";
+import { ChannelDetail, Channels } from "@/views/channels";
 import { Chat, ChatBuffer } from "@/views/chat";
 import { Dashboard } from "@/views/dashboard";
 import { ForgotPassword } from "@/views/forgot-password";
+import { HumanHandoff } from "@/views/human-handoff";
 import { Login } from "@/views/login";
 import { McpServers } from "@/views/mcp-servers";
 import { OrganizationMembers, Organizations } from "@/views/organizations";
@@ -46,8 +48,11 @@ export const router = createBrowserRouter([
       { path: "vector-stores", element: <VectorStores /> },
       { path: "webhooks", element: <Webhooks /> },
       { path: "mcp-servers", element: <McpServers /> },
+      { path: "channels", element: <Channels /> },
+      { path: "channels/:id", element: <ChannelDetail /> },
       { path: "chat", element: <Chat /> },
       { path: "chat-buffer", element: <ChatBuffer /> },
+      { path: "human-handoff", element: <HumanHandoff /> },
       { path: "audit-logs", element: <AuditLogs /> },
       { path: "users", element: <Users /> },
       { path: "organizations", element: <Organizations /> },

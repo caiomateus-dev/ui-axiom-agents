@@ -10,6 +10,8 @@ export {
   Modal,
   SlidePanel,
   Spinner,
+  Select,
+  TagInput,
   ToastContainer,
   Tooltip,
 } from "./ui";
