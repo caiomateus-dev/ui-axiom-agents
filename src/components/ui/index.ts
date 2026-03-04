@@ -10,3 +10,6 @@ export { SlidePanel } from "./SlidePanel";
 export { Spinner } from "./Spinner";
 export { ToastContainer } from "./ToastContainer";
 export { Tooltip } from "./Tooltip";
+export { TagInput } from "./TagInput";
+export { Select } from "./Select";
+export type { SelectOption } from "./Select";

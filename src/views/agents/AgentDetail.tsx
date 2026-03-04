@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import { ArrowLeft, MessageCircle, RotateCcw, Settings, Wrench, X } from "lucide-react";
+import { ArrowLeft, MessageCircle, RotateCcw, Server, Settings, Wrench, X } from "lucide-react";
 
 import { Badge, Button, Spinner } from "@/components";
 
 import { ChatBubble, ChatInput } from "@/views/chat/components";
 import { useChatPage } from "@/views/chat/hooks";
+import {
+  useAgentMcpLinks,
+  useLinkMcpToAgent,
+  useMcpServers,
+  useUnlinkMcpFromAgent,
+} from "@/views/mcp-servers/hooks/use-mcp-servers";
 import {
   useAgentTools,
   useAssignTool,
@@ -18,7 +24,7 @@ import { formatDateTime } from "@/utils";
 
 import { useAgent } from "./hooks/use-agents";
 
-type Tab = "detalhes" | "ferramentas" | "testar";
+type Tab = "detalhes" | "ferramentas" | "mcp" | "testar";
 
 export function AgentDetail() {
   const { id } = useParams<{ id: string }>();
@@ -31,7 +37,13 @@ export function AgentDetail() {
   const assignTool = useAssignTool(agentId);
   const removeTool = useRemoveTool(agentId);
 
+  const { data: agentMcpLinks = [], isLoading: isMcpLinksLoading } = useAgentMcpLinks(agentId);
+  const { data: allMcpServers = [] } = useMcpServers();
+  const linkMcp = useLinkMcpToAgent(agentId);
+  const unlinkMcp = useUnlinkMcpFromAgent(agentId);
+
   const assignedToolIds = new Set(agentTools.map((at) => at.tool.id));
+  const linkedMcpIds = new Set(agentMcpLinks.map((l) => l.mcp_server_id));
 
   const {
     sessionId,
@@ -108,6 +120,22 @@ export function AgentDetail() {
             {agentTools.length > 0 && (
               <span className="ml-1 text-xs bg-brand-50 text-brand-500 rounded-full px-1.5 py-0.5">
                 {agentTools.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setTab("mcp")}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              tab === "mcp"
+                ? "border-brand-500 text-brand-500"
+                : "border-transparent text-text-muted hover:text-text-main"
+            }`}
+          >
+            <Server className="w-4 h-4" />
+            Servidores MCP
+            {agentMcpLinks.length > 0 && (
+              <span className="ml-1 text-xs bg-brand-50 text-brand-500 rounded-full px-1.5 py-0.5">
+                {agentMcpLinks.length}
               </span>
             )}
           </button>
@@ -218,6 +246,80 @@ export function AgentDetail() {
                         loading={assignTool.isPending}
                       >
                         Adicionar
+                      </Button>
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Servidores MCP */}
+      {tab === "mcp" && (
+        <div className="p-6 overflow-y-auto space-y-6">
+          {/* MCPs vinculados */}
+          <div className="rounded-lg border border-border-subtle bg-bg-card p-5">
+            <h3 className="text-sm font-medium text-text-main mb-4">MCPs ativos neste agente</h3>
+            {isMcpLinksLoading ? (
+              <div className="flex items-center gap-2 text-sm text-text-muted">
+                <Spinner size="sm" /> Carregando...
+              </div>
+            ) : agentMcpLinks.length === 0 ? (
+              <p className="text-sm text-text-muted">Nenhum servidor MCP vinculado.</p>
+            ) : (
+              <ul className="space-y-2">
+                {agentMcpLinks.map((link) => (
+                  <li
+                    key={link.id}
+                    className="flex items-center justify-between rounded-md border border-border-subtle bg-bg-surface px-4 py-3"
+                  >
+                    <div>
+                      <p className="text-sm font-medium text-text-main">{link.mcp_name}</p>
+                      <p className="text-xs text-text-muted mt-0.5">{link.connection_type_code}</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => unlinkMcp.mutate(link.id)}
+                      loading={unlinkMcp.isPending}
+                    >
+                      <X className="w-4 h-4" />
+                      Remover
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* MCPs disponíveis para vincular */}
+          <div className="rounded-lg border border-border-subtle bg-bg-card p-5">
+            <h3 className="text-sm font-medium text-text-main mb-4">Vincular servidor MCP</h3>
+            {allMcpServers.filter((m) => m.is_active && !linkedMcpIds.has(m.id)).length === 0 ? (
+              <p className="text-sm text-text-muted">
+                Todos os servidores MCP ativos já estão vinculados.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {allMcpServers
+                  .filter((m) => m.is_active && !linkedMcpIds.has(m.id))
+                  .map((mcp) => (
+                    <li
+                      key={mcp.id}
+                      className="flex items-center justify-between rounded-md border border-border-subtle bg-bg-surface px-4 py-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-text-main">{mcp.name}</p>
+                        <p className="text-xs text-text-muted mt-0.5">{mcp.connection_type_name}</p>
+                      </div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => linkMcp.mutate(mcp.id)}
+                        loading={linkMcp.isPending}
+                      >
+                        Vincular
                       </Button>
                     </li>
                   ))}
