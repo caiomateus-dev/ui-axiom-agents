@@ -15,7 +15,6 @@ import { useApplications } from "@/views/applications/hooks/use-applications";
 
 import { formatDate } from "@/utils";
 
-
 import type { ChannelFormData } from "./dtos/request/channel.schema";
 import { channelSchema } from "./dtos/request/channel.schema";
 import type { ChannelResponse } from "./dtos/response/channel.response";
@@ -193,7 +192,7 @@ export function Channels() {
       header: "Ações",
       align: "right",
       accessor: (row) => (
-        <div className="flex items-center justify-end gap-1">
+        <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
           {row.status === "pending_qr" && row.provider === "whatsapp_waha" && (
             <Tooltip content="Ver QR Code">
               <Button variant="ghost" size="sm" onClick={() => setQrChannelId(row.id)}>
